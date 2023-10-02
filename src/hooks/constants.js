@@ -1,0 +1,8 @@
+export const role = {
+    ADMIN: "0xa0f2aec2c0a3b5c1c964e3277c8ca4f6a9a7f6474a1b9c3f912258c8e46e7a28",
+    TEACHER: "0x5d2b5dbf9587f8e7d3e3f5b98b75a8e7ddd5a41a94b4742bc1b17040e7e62468",
+    STUDENT: "0x8b93a5a0cb4c6e3780e3b19b3b1651c2c2a8237b1ea5693b5f839a153f3a3e6c",
+    SPONSOR: "0x5f0a5f78118b6e0b700e0357ae3909aaafe8fa706a075935688657cf4135f9a9",
+  };
+  
+export const academyAddress = "0x03aB6c074373e7957e07bF3FEb0629E5323a464B";

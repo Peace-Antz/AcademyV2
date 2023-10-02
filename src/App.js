@@ -1,99 +1,62 @@
-import { ConnectWallet } from "@thirdweb-dev/react";
 import "./styles/Home.css";
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { CssVarsProvider } from '@mui/joy/styles';
+import GlobalStyles from '@mui/joy/GlobalStyles';
+import CssBaseline from '@mui/joy/CssBaseline';
+import Box from '@mui/joy/Box';
 
-export default function Home() {
+import useScript from './useScript';
+import FirstSidebar from './components/FirstSidebar';
+import Header from './components/Header';
+
+// Import your pages
+import Courses from './pages/Courses';
+import Hero from './pages/Hero';
+import Profile from './pages/Profile';
+import Rank from './pages/Rank';
+import Resources from './pages/Resources';
+import Report from './pages/Report';
+import feather from 'feather-icons';
+
+const useEnhancedEffect = typeof window !== 'undefined' ? useEffect : useEffect;
+
+function App() {
+  const status = useScript(`https://unpkg.com/feather-icons`);
+  const [layout, setLayout] = React.useState(undefined);
+  
+  useEnhancedEffect(() => {
+    if (typeof feather !== 'undefined') feather.replace();
+  }, [status]);
+
   return (
-    <main className="main">
-      <div className="container">
-        <div className="header">
-          <h1 className="title">
-            Welcome to{" "}
-            <span className="gradient-text-0">
-              <a
-                href="https://thirdweb.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                thirdweb.
-              </a>
-            </span>
-          </h1>
-
-          <p className="description">
-            Get started by configuring your desired network in{" "}
-            <code className="code">src/index.js</code>, then modify the{" "}
-            <code className="code">src/App.js</code> file!
-          </p>
-
-          <div className="connect">
-            <ConnectWallet
-              dropdownPosition={{
-                side: "bottom",
-                align: "center",
-              }}
-            />
-          </div>
-        </div>
-
-        <div className="grid">
-          <a
-            href="https://portal.thirdweb.com/"
-            className="card"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/images/portal-preview.png"
-              alt="Placeholder preview of starter"
-            />
-            <div className="card-text">
-              <h2 className="gradient-text-1">Portal ➜</h2>
-              <p>
-                Guides, references, and resources that will help you build with
-                thirdweb.
-              </p>
-            </div>
-          </a>
-
-          <a
-            href="https://thirdweb.com/dashboard"
-            className="card"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/images/dashboard-preview.png"
-              alt="Placeholder preview of starter"
-            />
-            <div className="card-text">
-              <h2 className="gradient-text-2">Dashboard ➜</h2>
-              <p>
-                Deploy, configure, and manage your smart contracts from the
-                dashboard.
-              </p>
-            </div>
-          </a>
-
-          <a
-            href="https://thirdweb.com/templates"
-            className="card"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img
-              src="/images/templates-preview.png"
-              alt="Placeholder preview of templates"
-            />
-            <div className="card-text">
-              <h2 className="gradient-text-3">Templates ➜</h2>
-              <p>
-                Discover and clone template projects showcasing thirdweb
-                features.
-              </p>
-            </div>
-          </a>
-        </div>
-      </div>
-    </main>
+    <CssVarsProvider disableTransitionOnChange>   
+      <Router>
+        <GlobalStyles styles={(theme) => ({'[data-feather], .feather': {
+          color: `var(--Icon-color, ${theme.vars.palette.text.icon})`,
+          margin: 'var(--Icon-margin)',
+          fontSize: `var(--Icon-fontSize, ${theme.vars.fontSize.xl})`,
+          width: '1em',
+          height: '1em',
+        }})}/>
+        <CssBaseline />
+        <Box sx={{ display: 'flex', minHeight: '100dvh' }}>
+          <Header />
+          <FirstSidebar />
+          <Routes>
+            <Route path="/courses" element={<Courses />} />
+            <Route path="/hero" element={<Hero />} />
+            <Route path="/rank" element={<Rank />} />
+            <Route path="/resources" element={<Resources />} />
+            <Route path="/report" element={<Report />} />
+            <Route path="/profile" element={<Profile />} />
+            {/* Default route */}
+            <Route path="/" element={<Hero />} />
+          </Routes>
+        </Box>
+      </Router>
+    </CssVarsProvider>
   );
 }
+
+export default App;
