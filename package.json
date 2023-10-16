@@ -28,6 +28,7 @@
     "https": "npm:https-browserify",
     "https-browserify": "latest",
     "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
     "react": "^18.2",
     "react-dom": "^18.2",
     "react-icons": "^4.11.0",

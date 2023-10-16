@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { ThirdwebProvider } from "@thirdweb-dev/react";
-import { ChakraProvider } from '@chakra-ui/react'; // Import ChakraProvider
 import { StyledEngineProvider } from '@mui/joy/styles';
 import { Polygon } from "@thirdweb-dev/chains";
 import { CssVarsProvider } from '@mui/joy/styles';
@@ -24,6 +23,10 @@ import Search from './components/Search';
 import Filters from './components/Filters';
 import Toggles from './components/Toggles';
 import Pagination from './components/Pagination';
+import process from 'process';
+
+window.process = process;
+
 
 // This is the chain your dApp will work on.
 // Change this to the chain your app is built for.
@@ -33,6 +36,7 @@ const activeChain = Polygon;
 
 const container = document.getElementById("root");
 const root = createRoot(container);
+
 
 root.render(
   <React.StrictMode>

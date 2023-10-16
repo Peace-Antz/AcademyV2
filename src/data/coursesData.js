@@ -1,15 +1,15 @@
 import { useContract, useContractRead, useContractWrite, useContractEvents, useAddress, useStorage, MediaRenderer } from "@thirdweb-dev/react";
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
-
 import { ethers } from "ethers";
 
 //Course Contract functions
-export default async function CoursesData({ item, academyAddress }) {
+export default function CoursesData( item, academyAddress ) {
 
     //This uses the contract of each separate course
     console.log("First Item ", item);
-    const { contract } = useContract(item && item.data && item.data.courseId ? item.data.courseId : null);
+    console.log("First CourseID ", item.data.courseId);
+    const { contract } = useContract( item.data.courseId );
 
     const address = useAddress();
   
@@ -139,6 +139,21 @@ export default async function CoursesData({ item, academyAddress }) {
         subscribe: true, // Subscribe to new events
       },
     );
+
+    const { data: claimPaymentEvents } = useContractEvents(
+        contract,
+        "ClaimPayment", // Name of the event related to claiming the payment
+        {
+          queryFilter: {
+            filters: {},
+            fromBlock: 44871649, // Events starting from this block
+            toBlock: "latest", // Events up to this block
+            order: "asc", // Order of events ("asc" or "desc")
+          },
+          subscribe: true, // Subscribe to new events
+        },
+      );
+      
     
     
     //State hooks
@@ -178,12 +193,14 @@ export default async function CoursesData({ item, academyAddress }) {
       const [courseInfo, setCourseInfo] = useState(null);
       const [isLoadingCourseInfo, setIsLoadingCourseInfo] = useState(true);
       const [pdfData, setPdfData] = useState("");
-      const [syllabusPdf, setSyllabusPdf] = useState(null);
+      const [syllabusPdf, setSyllabusPdf] = useState(null);    
       const [startDateTime, setStartDateTime] = useState("");
       const [courseLStatus, setCourseLStatus] = useState('Pending');
       const [enrolledStudents, setEnrolledStudents] = useState([]);
       const [errorMessage, setErrorMessage] = useState(null);
       const [isModalOpen, setIsModalOpen] = useState(false);
+      const [isPaymentClaimed, setIsPaymentClaimed] = useState(false);
+
   
   
   
@@ -196,7 +213,7 @@ export default async function CoursesData({ item, academyAddress }) {
     // const studentStakeEther = ethers.utils.formatEther(studentStakeWei);
     
     console.log("enrollStake", enrollStake);
-    console.log("sponsorAmountInWei", sponsorAmountInWei);
+    console.log("sponsorAmountInWei cD.js", sponsorAmountInWei);
     console.log("sponsorAmount", sponsorAmount);
     // console.log("sponsorAmountInWei", unsponsorAmountInWei);
     // console.log("sponsorAmount", unsponsorAmount);
@@ -214,10 +231,21 @@ export default async function CoursesData({ item, academyAddress }) {
         setCourseLStatus("Complete");
       }
     }, [paymentStatus, courseStatus]);
-  
+
+    useEffect(() => {
+        if (claimPaymentEvents && claimPaymentEvents.length > 0) {
+          setIsPaymentClaimed(true);
+        }
+      }, [claimPaymentEvents]);
+      
+      useEffect(() => {
+        if (syllabusPdf) {
+          setSyllabusPdf(syllabusPdf);
+        }
+      }, [syllabusPdf]);
   
     useEffect(() => {
-      if (address && roleGrantedEvents && roleGrantedEvents.length > 0) {
+      if (item && address && roleGrantedEvents && roleGrantedEvents.length > 0) {
         setRoleGranted(true);
         setAccount(address);
       }
@@ -258,12 +286,7 @@ export default async function CoursesData({ item, academyAddress }) {
     }, [address, item?.data?.courseId]);
     
   
-    useEffect(() => {
-      if (syllabusPdf) {
-        setSyllabusPdf(syllabusPdf);
-      }
-    }, [syllabusPdf]);
-  
+
     // useEffect(() => {
     //   const fetchData = async () => {
     //     try {
@@ -283,7 +306,7 @@ export default async function CoursesData({ item, academyAddress }) {
       if (pdfData) {
         setPdfData(pdfData);
       }
-    });
+    },[syllabusPdf]);
   
     useEffect(() => {
       if (uriData && uriData.ok && uriData.headers && uriData.headers.get('content-type') === 'application/json') {
@@ -612,6 +635,9 @@ export default async function CoursesData({ item, academyAddress }) {
     console.log("uriData", uriData);
   //Course Card Design
   //if (!address) return <div>No wallet connected</div>;
+
+  console.log('Title on course data:', courseTitle);
+  console.log('Description on course data:', description);
   
   return {
     // State Variables
@@ -639,7 +665,6 @@ export default async function CoursesData({ item, academyAddress }) {
     uriSyl,
     json,
     pdfData,
-    syllabusPdf,
     courseInfo,
     courseTitle,
     description,
@@ -657,6 +682,7 @@ export default async function CoursesData({ item, academyAddress }) {
     unsponsorAddress,
     roleGranted,
     courseCount,
+    sponsorAmountInWei,
     // Method to mutate state or interact with contracts
     initializeCourseCall,
     setPaymentCall,
@@ -694,6 +720,7 @@ export default async function CoursesData({ item, academyAddress }) {
     isLoadingStudentDeposit,
     isLoadingStudentStake,
     isLoadingCourseInfo,
+    isPaymentClaimed,
     // Setter methods for state
     setRoleGranted,
     setPaymentSet,
@@ -711,7 +738,7 @@ export default async function CoursesData({ item, academyAddress }) {
     setUriSyl,
     setJson,
     setPdfData,
-    setSyllabusPdf,
+ 
     setCourseInfo,
     setCourseTitle,
     setDescription,

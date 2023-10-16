@@ -157,7 +157,7 @@ function Courses() {
                   item && <CourseCard 
                     //key={index} 
                     item={item} 
-                    //academyAddress={academyAddress}
+                    academyAddress={academyAddress}
                     //category={description}
                     //title={courseTitle}
                   />
