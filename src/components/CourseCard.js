@@ -28,6 +28,7 @@ import DialogContent from '@mui/joy/DialogContent';
 import SvgIcon from '@mui/joy/SvgIcon';
 import { styled } from '@mui/joy';
 import { MediaRenderer } from "@thirdweb-dev/react";
+import TextField from '@mui/material/TextField';
 
 
 
@@ -441,6 +442,7 @@ const handleImageUpload = async (file) => {
 }
 
 function formatNumberBasedOnValue(value) {
+  if (!value) return "0";
   if (value >= 10) {
       const formatted = parseFloat(value.toFixed(1));
       return formatted % 1 === 0 ? formatted.toFixed(0) : formatted.toFixed(1);
@@ -450,7 +452,11 @@ function formatNumberBasedOnValue(value) {
   }
 }
 
-const formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEther(studentStake.toString())));
+let formattedStake = "0"; // default value
+if(studentStake !== undefined) {
+    formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEther(studentStake.toString())));
+}
+
   
   if (teacherAddress === '0x0000000000000000000000000000000000000000') {
     return (
@@ -772,7 +778,7 @@ const formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEt
             <Button
               type="submit"
               variant="outlined"
-              color="success"
+              color="danger"
               startDecorator={
                 <SvgIcon>
               <svg viewBox="0 0 20 20">
@@ -781,7 +787,7 @@ const formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEt
               </SvgIcon>
               }
             >
-              Submit Course Details
+              Submit (Cannot Undo)
             </Button>
 
           </Stack>
