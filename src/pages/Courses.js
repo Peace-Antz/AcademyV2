@@ -53,6 +53,10 @@ function Courses() {
 
     console.log("address:", address);
 
+    useEffect(() => {
+      console.log('Courses has re-rendered!');
+  }, []);
+
 
   
 
@@ -111,7 +115,9 @@ function Courses() {
                 pb: 5,
               }}
             >
-              <Stack spacing={2}>
+              <Stack spacing={2}
+              sx={{ minWidth: 0 }}
+              >
                 <HeaderSection createCourseCall={createCourseCall} />
                 <Divider />
                 <Box

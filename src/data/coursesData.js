@@ -219,6 +219,11 @@ export default function CoursesData( item, academyAddress ) {
     // console.log("sponsorAmount", unsponsorAmount);
     // console.log("studentStakeWei", studentStakeWei);
     // console.log("studentStakeEther", studentStakeEther);
+
+    useEffect(() => {
+      console.log('coursesData.js has re-rendered!');
+  }, []);
+  
   
     useEffect(() => {
       if (!paymentStatus && !courseStatus) {
@@ -383,10 +388,10 @@ export default function CoursesData( item, academyAddress ) {
       }
     };
   
-    const uploadFile = async () => {
+    const uploadFile = async (courseTitle, description, timeCommitment, startDateTime, calendarLink, pdfData, imageData) => {
       try {
         // Validate that all required information is present
-        if (!courseTitle || !description || !timeCommitment || !pdfData) {
+        if (!courseTitle || !description || !timeCommitment || !startDateTime || !pdfData || !imageData) {
           throw new Error("Missing required course information");
         }
     
@@ -396,7 +401,9 @@ export default function CoursesData( item, academyAddress ) {
             description: description,
             timeCommitment: timeCommitment,
             startDate: startDateTime,
-            syllabus: pdfData
+            calendarLink: calendarLink,
+            syllabus: pdfData,
+            image: imageData
           }
         };
     
@@ -427,12 +434,12 @@ export default function CoursesData( item, academyAddress ) {
   
     console.log("initData:", initData);
   
-    const setPaymentCall = async () => {
+    const setPaymentCall = async (courseTitle, description, timeCommitment, startDateTime, calendarLink, pdfData, imageData, paymentAmountInWei) => {
       try {
         // Upload the file and get the course info
         let courseInfo;
         try {
-          courseInfo = await uploadFile();
+          courseInfo = await uploadFile(courseTitle, description, timeCommitment, startDateTime, calendarLink, pdfData, imageData);
         } catch (err) {
           console.error("Failed to upload file:", err);
           let errorReason;
@@ -721,6 +728,7 @@ export default function CoursesData( item, academyAddress ) {
     isLoadingStudentStake,
     isLoadingCourseInfo,
     isPaymentClaimed,
+    isSettingPayment,
     // Setter methods for state
     setRoleGranted,
     setPaymentSet,

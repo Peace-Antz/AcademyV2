@@ -29,6 +29,10 @@ function App() {
     if (typeof feather !== 'undefined') feather.replace();
   }, [status]);
 
+  useEffect(() => {
+    console.log('App.js has re-rendered!');
+}, []);
+
   return (
     <CssVarsProvider disableTransitionOnChange>   
       <Router>
