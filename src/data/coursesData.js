@@ -140,6 +140,20 @@ export default function CoursesData( item, academyAddress ) {
       },
     );
 
+    const { data: courseCompletedEvents } = useContractEvents(
+      contract,
+      "CourseCompleted", // Name of the event related to claiming the payment
+      {
+        queryFilter: {
+          filters: {},
+          fromBlock: 44871649, // Events starting from this block
+          toBlock: "latest", // Events up to this block
+          order: "asc", // Order of events ("asc" or "desc")
+        },
+        subscribe: true, // Subscribe to new events
+      },
+    );
+
     const { data: claimPaymentEvents } = useContractEvents(
         contract,
         "ClaimPayment", // Name of the event related to claiming the payment
@@ -665,6 +679,7 @@ export default function CoursesData( item, academyAddress ) {
     enrolledEvents,
     roleRevokedEvents,
     dropoutEvents,
+    courseCompletedEvents,
     balance,
     initData,
     data,

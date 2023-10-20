@@ -19,10 +19,12 @@ import LinearProgress from '@mui/joy/LinearProgress';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Tooltip from '@mui/joy/Tooltip';
 import Input from '@mui/joy/Input';
+import { Input as BaseInput } from '@mui/base/Input';
 import FormControl from '@mui/joy/FormControl';
 import FormLabel from '@mui/joy/FormLabel';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
+import ModalOverflow from '@mui/joy/ModalOverflow';
 import DialogTitle from '@mui/joy/DialogTitle';
 import DialogContent from '@mui/joy/DialogContent';
 import SvgIcon from '@mui/joy/SvgIcon';
@@ -100,6 +102,7 @@ export default function CourseCard({
     sponsorAmountInWei,
     balance,
     enrolledEvents,
+    courseCompletedEvents,
     address,
     enrolledStudents,
     syllabusPdf,
@@ -114,7 +117,7 @@ export default function CourseCard({
     initializeCourseCall,
     handlePdf,
     setPaymentCall,
-    uriCall,
+    startCourseCall,
     
   } = CoursesData(item, academyAddress);
 
@@ -152,6 +155,13 @@ export default function CourseCard({
     uploadFile,
     paymentAmountInWei
   } = CourseDetailsModalData();
+
+  const {
+    open: studentModalOpen,
+    setOpen: setStudentModalOpen,
+    studentStatus,
+    setStudentStatus
+  } = StudentEvaluationModalData();
 
   const extractFileNameFromURI = (uri) => {
     const filename = uri.split('/').pop();
@@ -457,6 +467,71 @@ if(studentStake !== undefined) {
     formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEther(studentStake.toString())));
 }
 
+function StudentEvaluationModalData() {
+  const [open, setOpen] = React.useState(false);
+  
+  // A dictionary to store the student status: {studentAddress: "in-progress"/"passed"/"failed"}
+  const [studentStatus, setStudentStatus] = React.useState("in-progress");
+
+  return {
+    open,
+    setOpen,
+    studentStatus,
+    setStudentStatus
+  };
+}
+
+function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus, enrolledStudents}) {
+  const handleStatusChange = (student, status) => {
+    setStudentStatus(prev => ({ ...prev, [student]: status }));
+  };
+
+  return (
+    <Modal open={open} onClose={() => setOpen(false)}>
+      <ModalOverflow>
+        <ModalDialog>
+          <DialogTitle>Student Evaluation</DialogTitle>
+          <DialogContent>
+            <Stack spacing={2}>
+              <Typography variant="h6">In Progress</Typography>
+              {enrolledStudents.map(student => 
+                studentStatus[student] === "in-progress" && (
+                  <div key={student}>
+                    {student}
+                    <Button onClick={() => handleStatusChange(student, "passed")}>Pass</Button>
+                    <Button onClick={() => handleStatusChange(student, "failed")}>Fail</Button>
+                  </div>
+                )
+              )}
+
+              <Typography variant="h6">Passed</Typography>
+              {enrolledStudents.map(student => 
+                studentStatus[student] === "passed" && (
+                  <div key={student}>
+                    {student}
+                  </div>
+                )
+              )}
+
+              <Typography variant="h6">Failed</Typography>
+              {enrolledStudents.map(student => 
+                studentStatus[student] === "failed" && (
+                  <div key={student}>
+                    {student}
+                  </div>
+                )
+              )}
+            </Stack>
+          </DialogContent>
+          {enrolledStudents.every(student => studentStatus[student] !== "in-progress") && (
+            <Button>Claim Payment</Button>
+          )}
+        </ModalDialog>
+      </ModalOverflow>
+    </Modal>
+  );
+}
+
   
   if (teacherAddress === '0x0000000000000000000000000000000000000000') {
     return (
@@ -567,7 +642,7 @@ if(studentStake !== undefined) {
       Input Course Details
     </Button>
     <Modal open={open} onClose={() => { if (formSubmitted || !uploading) setOpen(false); }}>
-
+      <ModalOverflow>
       <ModalDialog>
         <DialogTitle>Input Course Details</DialogTitle>
         <DialogContent>Fill in the information of the course.</DialogContent>
@@ -580,14 +655,14 @@ if(studentStake !== undefined) {
             setOpen(false);
           }}
         >
-          <Stack spacing={2}>
+          <Stack  spacing={1}>
             <FormControl>
               <FormLabel>Title</FormLabel>
               <Input maxLength="5" value={modalTitle} onChange={(e) => modalSetTitle(e.target.value)} placeholder="Name your course" autoFocus required />
             </FormControl>
             <FormControl>
               <FormLabel>Description</FormLabel>
-              <Input maxLength="250" value={modalDescription} onChange={(e) => setDescription(e.target.value)} placeholder="Write a brief description" required />
+              <Input slotProps={{ input: { multiline: true, rows:"2", maxLength:"250" } }} value={modalDescription} onChange={(e) => setDescription(e.target.value)} placeholder="Write a brief description" required />
             </FormControl>
             <FormControl>
               <FormLabel>Time Commitment in hours</FormLabel>
@@ -793,14 +868,31 @@ if(studentStake !== undefined) {
           </Stack>
         </form>
       </ModalDialog>
+      </ModalOverflow>
     </Modal>
+    
   </React.Fragment> :
     courseLStatus === "Open" ?
-      <Button variant="outlined" color="neutral" onClick={startCourse}>Start Course</Button> :
+      <Button variant="outlined" color="neutral" onClick={startCourseCall}>Start Course</Button> :
     // For "In-Progress" we will add the modal for Pass/Fail/Claim Payment in the next step
-    courseLStatus === "In-Progress" ?
-      <Button variant="outlined" color="neutral">Pass/Fail/Claim Payment</Button> : 
-      null
+    courseLStatus === "In-Progress" && (
+      <React.Fragment>
+        <Button 
+          variant="outlined" 
+          color="neutral"
+          onClick={() => setStudentModalOpen(true)}
+        >
+          Pass/Fail/Claim Payment
+        </Button>
+        <StudentEvaluationModal 
+          open={studentModalOpen} 
+          setOpen={setStudentModalOpen} 
+          studentStatus={studentStatus} 
+          setStudentStatus={setStudentStatus} 
+          enrolledStudents={enrolledStudents} 
+        />
+      </React.Fragment>
+    )
   )
 
 
