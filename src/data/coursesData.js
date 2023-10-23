@@ -1,4 +1,4 @@
-import { useContract, useContractRead, useContractWrite, useContractEvents, useAddress, useStorage, MediaRenderer } from "@thirdweb-dev/react";
+import { useContract, useContractRead, useContractWrite, useContractEvents, useStorage, useAddress } from "@thirdweb-dev/react";
 import { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import { ethers } from "ethers";
@@ -210,7 +210,11 @@ export default function CoursesData( item, academyAddress ) {
       const [syllabusPdf, setSyllabusPdf] = useState(null);    
       const [startDateTime, setStartDateTime] = useState("");
       const [courseLStatus, setCourseLStatus] = useState('Pending');
-      const [enrolledStudents, setEnrolledStudents] = useState([]);
+      const [studentStatus, setStudentStatus] = useState({});
+      const [studentsInProgress, setStudentsInProgress] = useState([]);
+      const [studentsPassed, setStudentsPassed] = useState([]);
+      const [studentsFailed, setStudentsFailed] = useState([]); // Dropout represents failure in this context.
+
       const [errorMessage, setErrorMessage] = useState(null);
       const [isModalOpen, setIsModalOpen] = useState(false);
       const [isPaymentClaimed, setIsPaymentClaimed] = useState(false);
@@ -302,7 +306,7 @@ export default function CoursesData( item, academyAddress ) {
         };
       
         fetchBalance();
-    }, [address, item?.data?.courseId]);
+    }, [address, courseCompletedEvents, enrolledEvents, roleRevokedEvents, dropoutEvents]);
     
   
 
@@ -346,26 +350,61 @@ export default function CoursesData( item, academyAddress ) {
   }, [isLoadingStudentDeposit, paymentStatusEvents, uri]);
   
   useEffect(() => {
-    let newEnrolledStudents = [...enrolledStudents];
+    const newStatus = { ...studentStatus };
   
-    // When a new StudentEnrolled event occurs, add the student to the list
-    if (enrolledEvents) {
-      enrolledEvents.forEach(event => {
-        if (!newEnrolledStudents.includes(event.data.account)) {
-          newEnrolledStudents.push(event.data.account);
+        if (enrolledEvents) {
+          enrolledEvents.forEach(e => {
+            if (!newStatus[e.data.account] || e.transaction.blockNumber > newStatus[e.data.account].blockNumber) {
+              newStatus[e.data.account] = { status: "inProgress", blockNumber: e.transaction.blockNumber };
+            }
+          });
         }
-      });
-    }
-  
-    // When a new RoleRevoked event occurs, remove the student from the list
-    if (roleRevokedEvents) {
-      roleRevokedEvents.forEach(event => {
-        newEnrolledStudents = newEnrolledStudents.filter(student => student !== event.data.account);
-      });
-    }
-  
-    setEnrolledStudents(newEnrolledStudents);
-  }, [enrolledEvents, roleRevokedEvents]);
+      
+        if (courseCompletedEvents) {
+          courseCompletedEvents.forEach(e => {
+            if (!newStatus[e.data.account] || e.transaction.blockNumber > newStatus[e.data.account].blockNumber) {
+              newStatus[e.data.account] = { status: "passed", blockNumber: e.transaction.blockNumber };
+            }
+          });
+        }
+      
+        if (dropoutEvents) {
+          dropoutEvents.forEach(e => {
+            if (!newStatus[e.data.account] || e.transaction.blockNumber > newStatus[e.data.account].blockNumber) {
+              newStatus[e.data.account] = { status: "failed", blockNumber: e.transaction.blockNumber };
+            }
+          });
+        }
+      
+        setStudentStatus(newStatus);
+      }, [enrolledEvents, courseCompletedEvents, dropoutEvents]);
+
+      useEffect(() => {
+        const inProgress = [];
+        const passed = [];
+        const failed = [];
+      
+        Object.keys(studentStatus).forEach(student => {
+          switch (studentStatus[student].status) {
+            case "inProgress":
+              inProgress.push(student);
+              break;
+            case "passed":
+              passed.push(student);
+              break;
+            case "failed":
+              failed.push(student);
+              break;
+            default:
+              break;
+          }
+        });
+      
+        setStudentsInProgress(inProgress);
+        setStudentsPassed(passed);
+        setStudentsFailed(failed);
+      }, [studentStatus]);
+      
   
   
       //TROUBLESHOOTING
@@ -381,11 +420,14 @@ export default function CoursesData( item, academyAddress ) {
   console.log("studentStake:", studentStake);
   console.log("paymentStatusEvents:", paymentStatusEvents);
   console.log("roleGrantedEvents:", roleGrantedEvents);
-  console.log("dropoutEvents:", dropoutEvents);
   console.log("courseInfo", courseInfo);
   console.log("pdfData", pdfData);
   console.log("syllabusPdf", syllabusPdf);
-  console.log("enrolledStudents", enrolledStudents);
+  console.log("studentAddress", studentAddress);
+  console.log("enrolledEvents", enrolledEvents);
+  console.log("courseCompletedEvents", courseCompletedEvents);
+  console.log("dropoutEvents", dropoutEvents);
+  console.log("claimPaymentEvents", claimPaymentEvents);
   
   
     //JS Functions
@@ -551,7 +593,7 @@ export default function CoursesData( item, academyAddress ) {
       }
     }
   
-    const bootCall = async () => {
+    const bootCall = async (studentAddress) => {
       try {
         const bootData = await bootStudent({ args: [studentAddress] });
         console.info("contract call success", bootData);
@@ -564,7 +606,7 @@ export default function CoursesData( item, academyAddress ) {
     }
     
   
-    const passCall = async () => {
+    const passCall = async (studentAddress) => {
       try {
         const passData = await passStudent({ args: [studentAddress] });
         console.info("contract call successs", passData);
@@ -693,7 +735,6 @@ export default function CoursesData( item, academyAddress ) {
     timeCommitment,
     startDateTime,
     courseLStatus,
-    enrolledStudents,
     errorMessage,
     isModalOpen,
     paymentSet,
@@ -705,6 +746,9 @@ export default function CoursesData( item, academyAddress ) {
     roleGranted,
     courseCount,
     sponsorAmountInWei,
+    studentsInProgress,
+    studentsPassed,
+    studentsFailed,
     // Method to mutate state or interact with contracts
     initializeCourseCall,
     setPaymentCall,
@@ -768,7 +812,6 @@ export default function CoursesData( item, academyAddress ) {
     setTimeCommitment,
     setStartDateTime,
     setCourseLStatus,
-    setEnrolledStudents,
     setErrorMessage,
     setIsModalOpen,
   };

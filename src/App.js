@@ -13,11 +13,12 @@ import Header from './components/Header';
 // Import your pages
 import Courses from './pages/Courses';
 import Hero from './pages/Hero';
-import Profile from './pages/Profile';
+import Review from './pages/Review';
 import Rank from './pages/Rank';
 import Resources from './pages/Resources';
 import Report from './pages/Report';
 import feather from 'feather-icons';
+import { Reviews } from "@mui/icons-material";
 
 const useEnhancedEffect = typeof window !== 'undefined' ? useEffect : useEffect;
 
@@ -53,7 +54,7 @@ function App() {
             <Route path="/rank" element={<Rank />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/report" element={<Report />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/review" element={<Review />} />
             {/* Default route */}
             <Route path="/" element={<Hero />} />
           </Routes>

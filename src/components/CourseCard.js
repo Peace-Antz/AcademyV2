@@ -9,8 +9,6 @@ import Link from '@mui/joy/Link';
 import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import Rating from './Rating';
-import { useContract, useContractRead, useContractWrite, useAddress } from "@thirdweb-dev/react";
-import Web3 from 'web3';
 import CoursesData from "../data/coursesData";
 import feather from 'feather-icons';
 import { ethers } from "ethers";
@@ -31,6 +29,8 @@ import SvgIcon from '@mui/joy/SvgIcon';
 import { styled } from '@mui/joy';
 import { MediaRenderer } from "@thirdweb-dev/react";
 import TextField from '@mui/material/TextField';
+import Badge from '@mui/joy/Badge';
+
 
 
 
@@ -45,7 +45,7 @@ export default function CourseCard({
    //title,
    rareFind = false,
    liked = false,
-   image = null,
+   thumbnail = null,
 }) {
 
   console.log('Received item in CourseCard:', item);
@@ -102,11 +102,13 @@ export default function CourseCard({
     sponsorAmountInWei,
     balance,
     enrolledEvents,
-    courseCompletedEvents,
     address,
     enrolledStudents,
     syllabusPdf,
     pdfData,
+    studentsInProgress,
+    studentsPassed,
+    studentsFailed,
     
     setSponsorAmount,
     enrollCall,
@@ -118,6 +120,9 @@ export default function CourseCard({
     handlePdf,
     setPaymentCall,
     startCourseCall,
+    passCall,
+    bootCall,
+    claimCall,
     
   } = CoursesData(item, academyAddress);
 
@@ -140,8 +145,8 @@ export default function CourseCard({
     setTimeCommitment,
     modalStartDate,
     setStartDate,
-    calendarLink,
-    setCalendarLink,
+    modalCalendarLink,
+    setModalCalendarLink,
     modalPayment,
     modalSetPayment,
     setFormSubmitted,
@@ -149,19 +154,13 @@ export default function CourseCard({
     setFileUploaded,
     imageUploading,
     imageUploaded,
-    courseImage,
-    setCourseImage,
     handleImageUpload,
+    courseImage,
     uploadFile,
     paymentAmountInWei
   } = CourseDetailsModalData();
 
-  const {
-    open: studentModalOpen,
-    setOpen: setStudentModalOpen,
-    studentStatus,
-    setStudentStatus
-  } = StudentEvaluationModalData();
+
 
   const extractFileNameFromURI = (uri) => {
     const filename = uri.split('/').pop();
@@ -174,6 +173,8 @@ export default function CourseCard({
     console.log('CourseCard has re-rendered!');
 }, []);
 
+const [studentModalOpen, setStudentModalOpen] = useState(false);
+
 
 // Use default values if courseInfo is null or undefined
 const defaultInfo = courseLStatus === "Pending" ? "TBD" : "Fetching Data...";
@@ -181,8 +182,11 @@ const {
   title = defaultInfo,
   description = defaultInfo,
   timeCommitment = defaultInfo,
-  startDate = defaultInfo
+  startDate = defaultInfo,
+  image = defaultInfo,
+  calendarLink = defaultInfo,
 } = courseInfo || {};
+
 
 
 let progress;
@@ -200,9 +204,37 @@ if (payment === 0) {
   maticNeeded = Number(payment - sponsorshipTotal) * 0.000000000000000001;
 }
 
+let color;
+let badgeContent;
+
+switch(courseLStatus) {
+  case 'Pending':
+    color = 'danger';
+    badgeContent = 'Pending';
+    break;
+  case 'Open':
+    color = 'success';
+    badgeContent = 'Open';
+    break;
+  case 'In-Progress':
+    color = 'primary';
+    badgeContent = 'In-Progress';
+    break;
+  case 'Complete':
+    color = 'neutral';
+    badgeContent = 'Complete';
+    break;
+  default:
+    color = 'neutral';
+    badgeContent = 'Unknown';
+}
+
 console.log('progress', progress);
 console.log('maticNeeded', maticNeeded);
 console.log('payment CC check', payment);
+console.log('studentsInProgress', studentsInProgress);
+console.log('studentsPassed', studentsPassed);
+console.log('studentsInProgress', studentsFailed);
 
 const isEnrolled = enrolledStudents && enrolledStudents.includes(address);
 
@@ -384,7 +416,7 @@ function CourseDetailsModalData() {
   const [modalDescription, setDescription] = React.useState('');
   const [modalTimeCommitment, setTimeCommitment] = React.useState('');
   const [modalStartDate, setStartDate] = React.useState('');
-  const [calendarLink, setCalendarLink] = React.useState('');
+  const [modalCalendarLink, setModalCalendarLink] = React.useState('');
   const [modalPayment, modalSetPayment] = React.useState('0');
   const [imageUploading, setImageUploading] = useState(false);
   const [imageUploaded, setImageUploaded] = useState(false);
@@ -433,8 +465,8 @@ const handleImageUpload = async (file) => {
     setTimeCommitment,
     modalStartDate,
     setStartDate,
-    calendarLink,
-    setCalendarLink,
+    modalCalendarLink,
+    setModalCalendarLink,
     modalPayment,
     modalSetPayment,
     formSubmitted,
@@ -467,23 +499,31 @@ if(studentStake !== undefined) {
     formattedStake = formatNumberBasedOnValue(parseFloat(ethers.utils.formatEther(studentStake.toString())));
 }
 
-function StudentEvaluationModalData() {
-  const [open, setOpen] = React.useState(false);
-  
-  // A dictionary to store the student status: {studentAddress: "in-progress"/"passed"/"failed"}
-  const [studentStatus, setStudentStatus] = React.useState("in-progress");
-
-  return {
-    open,
-    setOpen,
-    studentStatus,
-    setStudentStatus
+function StudentEvaluationModal({
+  open,
+  setOpen,
+  studentsInProgress = [],
+  studentsPassed = [],
+  studentsFailed = [],
+  passCall,
+  bootCall,
+}) {
+  const handlePass = async (studentAddress) => {
+    try {
+      await passCall(studentAddress); // Assuming passCall accepts the student address.
+      // If needed, update local state or cache after passing a student.
+    } catch (error) {
+      console.error("Failed to pass student:", error);
+    }
   };
-}
 
-function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus, enrolledStudents}) {
-  const handleStatusChange = (student, status) => {
-    setStudentStatus(prev => ({ ...prev, [student]: status }));
+  const handleFail = async (studentAddress) => {
+    try {
+      await bootCall(studentAddress); // Assuming bootCall accepts the student address.
+      // If needed, update local state or cache after failing a student.
+    } catch (error) {
+      console.error("Failed to fail student:", error);
+    }
   };
 
   return (
@@ -494,38 +534,38 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
           <DialogContent>
             <Stack spacing={2}>
               <Typography variant="h6">In Progress</Typography>
-              {enrolledStudents.map(student => 
-                studentStatus[student] === "in-progress" && (
-                  <div key={student}>
-                    {student}
-                    <Button onClick={() => handleStatusChange(student, "passed")}>Pass</Button>
-                    <Button onClick={() => handleStatusChange(student, "failed")}>Fail</Button>
-                  </div>
-                )
-              )}
+              {studentsInProgress && studentsInProgress.map(studentAddress => (
+                <div key={studentAddress}>
+                  {studentAddress}
+                  <Button onClick={() => handlePass(studentAddress)}>Pass</Button>
+                  <Button onClick={() => handleFail(studentAddress)}>Fail</Button>
+                </div>
+              ))}
 
               <Typography variant="h6">Passed</Typography>
-              {enrolledStudents.map(student => 
-                studentStatus[student] === "passed" && (
-                  <div key={student}>
-                    {student}
-                  </div>
-                )
-              )}
+              {studentsPassed && studentsPassed.map(studentAddress => (
+                <div key={studentAddress}>
+                  {studentAddress}
+                </div>
+              ))}
 
               <Typography variant="h6">Failed</Typography>
-              {enrolledStudents.map(student => 
-                studentStatus[student] === "failed" && (
-                  <div key={student}>
-                    {student}
-                  </div>
-                )
-              )}
+              {studentsFailed && studentsFailed.map(studentAddress => (
+                <div key={studentAddress}>
+                  {studentAddress}
+                </div>
+              ))}
             </Stack>
           </DialogContent>
-          {enrolledStudents.every(student => studentStatus[student] !== "in-progress") && (
-            <Button>Claim Payment</Button>
-          )}
+          {!studentsInProgress.length && !isPaymentClaimed ? 
+              <Button onClick={claimCall}>
+                  Claim Payment
+              </Button>
+          :
+              isPaymentClaimed &&
+              <Button disabled style={{ backgroundColor: 'grey' }}>Distribute Unlock Certificates *Coming Soon!*</Button>
+          }
+
         </ModalDialog>
       </ModalOverflow>
     </Modal>
@@ -566,7 +606,7 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-    },
+    },  
     React.createElement(
       Stack,
       {
@@ -578,6 +618,27 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
         width: '100%',
         spacing: 2.5,
       },
+      React.createElement(
+        Badge,
+        {
+          color: color,
+          badgeContent: badgeContent,
+          anchorOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+          },
+          sx: {
+            
+            width: {
+              xs: '100%',
+              sm: 200,
+            },
+            marginBottom: {
+              xs: -2.5,
+              sm: 0,
+            },
+          },
+        },
       React.createElement(
         Box,
         {
@@ -605,19 +666,19 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
               },
             }),
           },
-          React.createElement('img', { alt: '', src: image, style: { display: 'block' } }),
-          rareFind && (
-            React.createElement(
-              Chip,
-              {
-                variant: 'soft',
-                startDecorator: React.createElement('i', { 'data-feather': 'award' }),
-                size: 'sm',
-                sx: { position: 'absolute', bottom: 8, left: 8 },
-              },
-              'Rare find'
-            )
-          ),
+          React.createElement(MediaRenderer, { alt: 'Thumbnail', src: image, width: '100%', height: '100%' }),
+          // rareFind && (
+          //   React.createElement(
+          //     Chip,
+          //     {
+          //       variant: 'soft',
+          //       startDecorator: React.createElement('i', { 'data-feather': 'award' }),
+          //       size: 'sm',
+          //       sx: { position: 'absolute', bottom: 8, left: 8 },
+          //     },
+          //     'Rare find'
+          //   )
+          // ),
         ),
         // Inside the return statement of CourseCard
 
@@ -650,7 +711,7 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
           onSubmit={() => {
             //event.preventDefault();
             //event.stopPropagation();
-            setPaymentCall(modalTitle, modalDescription, modalTimeCommitment, modalStartDate, calendarLink, pdfData, courseImage, paymentAmountInWei);
+            setPaymentCall(modalTitle, modalDescription, modalTimeCommitment, modalStartDate, modalCalendarLink, pdfData, courseImage, paymentAmountInWei);
             setFormSubmitted(true);
             setOpen(false);
           }}
@@ -674,7 +735,7 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
             </FormControl>
             <FormControl>
             <FormLabel>Calender Link</FormLabel>
-              <Input type="url" value={calendarLink} onChange={(e) => setCalendarLink(e.target.value)} placeholder="Link to a course calendar"/>
+              <Input type="url" value={modalCalendarLink} onChange={(e) => setModalCalendarLink(e.target.value)} placeholder="Link to a course calendar"/>
             </FormControl>
             <FormControl>
             <FormLabel>Set Your Payment</FormLabel>
@@ -873,29 +934,40 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
     
   </React.Fragment> :
     courseLStatus === "Open" ?
-      <Button variant="outlined" color="neutral" onClick={startCourseCall}>Start Course</Button> :
+      <Button fullWidth= 'true' variant="outlined" color="neutral" onClick={startCourseCall}>Start Course</Button> :
     // For "In-Progress" we will add the modal for Pass/Fail/Claim Payment in the next step
-    courseLStatus === "In-Progress" && (
+    (courseLStatus === "In-Progress" || courseLStatus === "Complete") && (
       <React.Fragment>
-        <Button 
-          variant="outlined" 
-          color="neutral"
-          onClick={() => setStudentModalOpen(true)}
-        >
-          Pass/Fail/Claim Payment
-        </Button>
-        <StudentEvaluationModal 
-          open={studentModalOpen} 
-          setOpen={setStudentModalOpen} 
-          studentStatus={studentStatus} 
-          setStudentStatus={setStudentStatus} 
-          enrolledStudents={enrolledStudents} 
+        {isPaymentClaimed ? 
+      <Button 
+        variant="outlined" 
+        color="neutral"
+        disabled
+      >
+        Airdrop Certificates *Coming Soon!*
+      </Button>
+      :
+      <Button 
+        variant="outlined" 
+        color="neutral"
+        onClick={() => setStudentModalOpen(true)}
+      >
+        Pass/Fail/Claim Payment
+      </Button>
+    }
+        <StudentEvaluationModal
+          open={studentModalOpen}
+          setOpen={setStudentModalOpen}
+          studentsInProgress={studentsInProgress || []}
+          studentsPassed={studentsPassed || []}
+          studentsFailed={studentsFailed || []}
+          passCall={passCall}
+          bootCall={bootCall}
         />
       </React.Fragment>
     )
   )
-
-
+      ),
       ),
       
       React.createElement(
@@ -995,7 +1067,7 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
             direction: 'row',
           },
           React.createElement(Rating, null),
-          React.createElement(Typography, null, '202 reviews')
+          React.createElement(Typography, null, '*Reviews coming soon!*')
         ),
         React.createElement(
           Stack,
@@ -1011,6 +1083,14 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
             },
             displayAddress
           ),
+          React.createElement(
+            Link,
+            {
+              href: calendarLink, // The URL you want to link to
+              target: '_blank',       // Optional: Opens the link in a new tab
+              rel: 'noopener noreferrer', // Best practice when using target="_blank" for security reasons
+              color: 'neutral'
+            },
           React.createElement(
             Typography,
             {
@@ -1030,6 +1110,7 @@ function StudentEvaluationModal({open, setOpen, studentStatus, setStudentStatus,
               minute: "2-digit",
               timeZoneName: "short"
           })
+          ),
           ),
           React.createElement(
             Typography,
