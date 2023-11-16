@@ -23,7 +23,7 @@ function Courses() {
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedCourseId, setCourseId]= useState(null);
-  // const { selectedContract } = useContract(selectedCourse); 
+  const { selectedContract } = useContract(selectedCourse); 
   // const { data, isLoading } = useContractRead(selectedContract, "uri", []);
   const storage = useStorage();
   const address = useAddress();
@@ -35,6 +35,7 @@ function Courses() {
 
   const [courseUri, setCourseUri] = useState(null);
   const [displayedSyllabus, setDisplayedSyllabus] = useState(null);
+ 
 
   // const {
   //   courseInfo,
@@ -43,7 +44,10 @@ function Courses() {
   console.log("courseUri", courseUri);
   
   console.log("selectedCourseId", selectedCourseId);
+  console.log("selectedContract on Courses", selectedContract);
+  console.log("Contract on Courses", contract);
   console.log("selectedCourse", selectedCourse);
+  
   
   console.log("account:", account);
   // const { account } = address || {};
@@ -77,6 +81,12 @@ function Courses() {
     useEffect(() => {
       console.log('Courses has re-rendered!');
   }, []);
+
+  useEffect(() => {
+    if(selectedCourse !== null) {
+      console.log('Course select effect has re-rendered!');
+    }
+}, [selectedCourse]);
 
 //   const handleCourseSelect = (courseInfo) => {
 //     setCourseInfo(courseInfo); // This will hold the detailed info of the course
@@ -169,32 +179,6 @@ function Courses() {
                 {event && event.length > 0 && [...event].sort((a, b) => b.transaction.blockNumber - a.transaction.blockNumber).map((item, index) => {
                 console.log('Mapping item: ', item);
                 console.log('Index after event sort ', index);
-                
-                // // Assuming item has a courseId and CoursesData is an array you can search through
-                // const courseId = item.data ? item.data.courseId : null;
-                // const courseInfo = CoursesData(item, academyAddress);
-                // console.log('courseInfo on courses', courseInfo);
-                // console.log('selectedCourseInfo on courses', selectedCourseInfo);
-                // console.log('courseId from Courses.js', courseId);
-                // const description = courseInfo ? courseInfo.description : "";
-                // const courseTitle = courseInfo ? courseInfo.courseTitle : "";
-                // console.log("Contract Instance: ", contract);
-                // console.log("item.data.courseId: ", item && item.data ? item.data.courseId : null);
-                // if(item) {
-                //     console.log("Item is defined:", item);
-                //     if(item.data) {
-                //       console.log("item.data is defined:", item.data);
-                //       if(item.data.courseId) {
-                //         console.log("item.data.courseId is defined:", item.data.courseId);
-                //       } else {
-                //         console.error("item.data.courseId is undefined");
-                //       }
-                //     } else {
-                //       console.error("item.data is undefined");
-                //     }
-                //   } else {
-                //     console.error("Item is undefined");
-                //   }
 
                 return (
                   item && <CourseCard 
@@ -203,10 +187,12 @@ function Courses() {
                     academyAddress={academyAddress}
                     //category={description}
                     //title={courseTitle}
-                    //courseInfo={selectedCourseInfo}
+                    //courseInfo={courseInfo}
                     onClick={() => {
                       console.log("Clicked");
                       setCourseId(item.data.courseId);
+                      //setSelectedSyllabus(courseInfo);
+
                   }}
                   />
                 );

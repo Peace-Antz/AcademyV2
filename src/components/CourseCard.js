@@ -49,6 +49,9 @@ export default function CourseCard({
    liked = false,
    thumbnail = null,
 }) {
+  const [selectedSyllabus, setSelectedSyllabus] = useState(null);
+
+  console.log("selectedSyllabus", selectedSyllabus);
 
   console.log('Received item in CourseCard:', item);
 
@@ -283,6 +286,7 @@ console.log('enrolledEvents', enrolledEvents);
 console.log('enrolledStudents', enrolledStudents);
 console.log('isEnrolled', isEnrolled);
   console.log('courseInfo received by course card:', courseInfo);
+  console.log('syllabus to send to Courses.js:', syllabus);
   console.log('sponsorAmountInWei CC.js', sponsorAmountInWei);
 
   const [isLiked, setIsLiked] = useState(liked);
@@ -608,7 +612,7 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-      onClick: () => onClick(courseInfo),
+      onClick: () => onClick(setSelectedSyllabus(item.data.courseId +'/'+ syllabus)),
     },  
     React.createElement(
       Stack,
