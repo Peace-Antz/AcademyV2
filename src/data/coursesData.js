@@ -292,21 +292,21 @@ export default function CoursesData( item, academyAddress ) {
     useEffect(() => {
         const fetchBalance = async () => {
             try {
-                const web3 = new Web3(Web3.givenProvider || "https://polygon-rpc.com");
-                if (web3.utils.isAddress(address)) {
+                const web3 = new Web3(Web3.givenProvider || "https://peace-antz-academy.infura-ipfs.io");
+                if (web3.utils.isAddress(item?.data?.courseId)) {
                     const contractBalance = await web3.eth.getBalance(item?.data?.courseId);
                     console.log("Raw Balance in Wei:", contractBalance); 
                     setBalance(web3.utils.fromWei(contractBalance, 'ether'));
                 } else {
-                    console.error(`Invalid address: ${address}`);
+                    console.error(`Invalid address: ${item?.data?.courseId}`);
                 }
             } catch (error) {
-                console.error(`Error fetching balance for address ${address}:`, error);
+                console.error(`Error fetching balance for address ${item?.data?.courseId}:`, error);
             }
         };
       
-        fetchBalance();
-    }, [address, courseCompletedEvents, enrolledEvents, roleRevokedEvents, dropoutEvents]);
+        fetchBalance(item?.data?.courseId);
+    }, [item?.data?.courseId, courseCompletedEvents, enrolledEvents, roleRevokedEvents, dropoutEvents]);
     
   
 

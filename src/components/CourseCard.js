@@ -10,6 +10,7 @@ import Stack from '@mui/joy/Stack';
 import Typography from '@mui/joy/Typography';
 import Rating from './Rating';
 import CoursesData from "../data/coursesData";
+import Courses from "../pages/Courses";
 import feather from 'feather-icons';
 import { ethers } from "ethers";
 import Button from '@mui/joy/Button';
@@ -36,9 +37,10 @@ import Badge from '@mui/joy/Badge';
 
 
 export default function CourseCard({
-  //key,
+  key,
   item,
   academyAddress,
+  onClick,
   //courseInfo,
   // courseNumber,
    //category,
@@ -161,7 +163,6 @@ export default function CourseCard({
   } = CourseDetailsModalData();
 
 
-
   const extractFileNameFromURI = (uri) => {
     const filename = uri.split('/').pop();
     return decodeURIComponent(filename);
@@ -185,6 +186,7 @@ const {
   startDate = defaultInfo,
   image = defaultInfo,
   calendarLink = defaultInfo,
+  syllabus = defaultInfo,
 } = courseInfo || {};
 
 
@@ -421,7 +423,7 @@ function CourseDetailsModalData() {
   const [imageUploading, setImageUploading] = useState(false);
   const [imageUploaded, setImageUploaded] = useState(false);
   const [courseImage, setCourseImage] = useState(null);
-
+  
   const [formSubmitted, setFormSubmitted] = useState(false);
   const paymentAmountInWei = modalPayment > 0 
   ? ethers.utils.parseUnits(modalPayment.toString(), 'ether') 
@@ -606,6 +608,7 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
+      onClick: () => onClick(courseInfo),
     },  
     React.createElement(
       Stack,

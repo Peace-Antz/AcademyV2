@@ -13,17 +13,38 @@ import Filters from '/home/peaceantz/academyV2/src/components/Filters.js';
 import Toggles from '/home/peaceantz/academyV2/src/components/Toggles.js';
 import { useContract, useContractRead, useContractWrite, useContractEvents, useAddress, useStorage, MediaRenderer } from "@thirdweb-dev/react";
 import { useState, useEffect } from 'react';
-import Web3 from 'web3';
 import CoursesData from '../data/coursesData.js';
 
-import { ethers } from "ethers";
+
 
 function Courses() {
   const academyAddress = "0x03aB6c074373e7957e07bF3FEb0629E5323a464B"
   // eslint-disable-next-line
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
+  const [selectedCourse, setSelectedCourse] = useState(null);
+  const [selectedCourseId, setCourseId]= useState(null);
+  // const { selectedContract } = useContract(selectedCourse); 
+  // const { data, isLoading } = useContractRead(selectedContract, "uri", []);
+  const storage = useStorage();
   const address = useAddress();
   const [account, setAccount] = useState("");
+  
+  console.log("contract", contract);
+  // console.log("selectedContract", selectedContract);
+  //console.log("Data from URI read", data);
+
+  const [courseUri, setCourseUri] = useState(null);
+  const [displayedSyllabus, setDisplayedSyllabus] = useState(null);
+
+  // const {
+  //   courseInfo,
+  // } = CoursesData();
+
+  console.log("courseUri", courseUri);
+  
+  console.log("selectedCourseId", selectedCourseId);
+  console.log("selectedCourse", selectedCourse);
+  
   console.log("account:", account);
   // const { account } = address || {};
   const { data: event } = useContractEvents(
@@ -57,8 +78,20 @@ function Courses() {
       console.log('Courses has re-rendered!');
   }, []);
 
+//   const handleCourseSelect = (courseInfo) => {
+//     setCourseInfo(courseInfo); // This will hold the detailed info of the course
+// };
 
-  
+
+  // useEffect for selectedCourse changes
+  // useEffect(() => {
+  //   if (selectedCourse) {
+  //     // Fetch and display the syllabus for the selected course
+  //     fetchAndDisplaySyllabus(selectedCourse); // Pass the selected course's contract address
+  //   }
+  // }, [selectedCourse]);
+
+  // console.log("displayedSyllabus", displayedSyllabus);
 
   
 
@@ -130,34 +163,38 @@ function Courses() {
                   }}
                   display={{ xs: 'block', md: 'none' }}
                 />
-                <Filters />
+                {/* <Filters />
                 <Search />
-                <Toggles />
+                <Toggles /> */}
                 {event && event.length > 0 && [...event].sort((a, b) => b.transaction.blockNumber - a.transaction.blockNumber).map((item, index) => {
                 console.log('Mapping item: ', item);
+                console.log('Index after event sort ', index);
                 
-                // Assuming item has a courseId and CoursesData is an array you can search through
-                const courseId = item.data ? item.data.courseId : null;
-                const courseData = CoursesData[courseId];
-                const description = courseData ? courseData.description : "";
-                const courseTitle = courseData ? courseData.courseTitle : "";
-                console.log("Contract Instance: ", contract);
-                console.log("item.data.courseId: ", item && item.data ? item.data.courseId : null);
-                if(item) {
-                    console.log("Item is defined:", item);
-                    if(item.data) {
-                      console.log("item.data is defined:", item.data);
-                      if(item.data.courseId) {
-                        console.log("item.data.courseId is defined:", item.data.courseId);
-                      } else {
-                        console.error("item.data.courseId is undefined");
-                      }
-                    } else {
-                      console.error("item.data is undefined");
-                    }
-                  } else {
-                    console.error("Item is undefined");
-                  }
+                // // Assuming item has a courseId and CoursesData is an array you can search through
+                // const courseId = item.data ? item.data.courseId : null;
+                // const courseInfo = CoursesData(item, academyAddress);
+                // console.log('courseInfo on courses', courseInfo);
+                // console.log('selectedCourseInfo on courses', selectedCourseInfo);
+                // console.log('courseId from Courses.js', courseId);
+                // const description = courseInfo ? courseInfo.description : "";
+                // const courseTitle = courseInfo ? courseInfo.courseTitle : "";
+                // console.log("Contract Instance: ", contract);
+                // console.log("item.data.courseId: ", item && item.data ? item.data.courseId : null);
+                // if(item) {
+                //     console.log("Item is defined:", item);
+                //     if(item.data) {
+                //       console.log("item.data is defined:", item.data);
+                //       if(item.data.courseId) {
+                //         console.log("item.data.courseId is defined:", item.data.courseId);
+                //       } else {
+                //         console.error("item.data.courseId is undefined");
+                //       }
+                //     } else {
+                //       console.error("item.data is undefined");
+                //     }
+                //   } else {
+                //     console.error("Item is undefined");
+                //   }
 
                 return (
                   item && <CourseCard 
@@ -166,11 +203,16 @@ function Courses() {
                     academyAddress={academyAddress}
                     //category={description}
                     //title={courseTitle}
+                    //courseInfo={selectedCourseInfo}
+                    onClick={() => {
+                      console.log("Clicked");
+                      setCourseId(item.data.courseId);
+                  }}
                   />
                 );
               })}
                 <Divider />
-                <Pagination />
+                {/* <Pagination /> */}
               </Stack>
             </Grid>
             <Grid
@@ -187,16 +229,25 @@ function Courses() {
                   height: '100dvh',
                 }}
               >
-                <Box
-                  sx={{
-                    backgroundColor: 'background.level1',
-                    height: '100%',
-                    borderRadius: 'sm',
-                    backgroundSize: 'cover',
-                    backgroundImage:
-                      'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
-                  }}
-                />
+                {displayedSyllabus ? 
+                    <iframe 
+                        src={displayedSyllabus} 
+                        width="100%" 
+                        height="100%" 
+                        style={{border: "none"}}
+                    ></iframe>
+                :
+                    <Box
+                        sx={{
+                            backgroundColor: 'background.level1',
+                            height: '100%',
+                            borderRadius: 'sm',
+                            backgroundSize: 'cover',
+                            backgroundImage:
+                                'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
+                        }}
+                    />
+                }
               </Box>
             </Grid>
           </Grid>

@@ -172,7 +172,7 @@ export default function FirstSidebar() {
         }}
       >
         <ColorSchemeToggle sx={{ display: {  md: 'inline-flex' } }} />
-        <ListItem>
+        {/* <ListItem>
           <ListItemButton>
             <i data-feather="life-buoy" />
           </ListItemButton>
@@ -181,7 +181,7 @@ export default function FirstSidebar() {
           <ListItemButton>
             <i data-feather="settings" />
           </ListItemButton>
-        </ListItem>
+        </ListItem> */}
       </List>
       <IconButton
         aria-controls={'composition-menu'}
