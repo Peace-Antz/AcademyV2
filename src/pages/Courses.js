@@ -35,6 +35,33 @@ function Courses() {
 
   const [courseUri, setCourseUri] = useState(null);
   const [displayedSyllabus, setDisplayedSyllabus] = useState(null);
+  const convertIpfsToHttp = (ipfsUri) => {
+    if (!ipfsUri) return '';
+    const ipfsPath = ipfsUri.split("ipfs://")[1];
+    return `https://ipfs.io/ipfs/${ipfsPath}`;
+  };
+
+  const [convertedUri, setConvertedUri] = useState('');
+
+  const isValidHttpUrl = (string) => {
+    // Check if the string contains 'undefined'
+    if (!string || string.includes('undefined')) {
+      return false;
+    }
+  
+    let url;
+  
+    try {
+      url = new URL(string);
+    } catch (_) {
+      return false; // If the URL constructor fails, it's not a valid URL
+    }
+  
+    return url.protocol === "http:" || url.protocol === "https:";
+  };
+  
+  
+  
  
 
   // const {
@@ -47,7 +74,7 @@ function Courses() {
   console.log("selectedContract on Courses", selectedContract);
   console.log("Contract on Courses", contract);
   console.log("selectedCourse", selectedCourse);
-  
+  console.log("convertedUri", convertedUri);
   
   console.log("account:", account);
   // const { account } = address || {};
@@ -83,13 +110,15 @@ function Courses() {
   }, []);
 
   useEffect(() => {
-    if(selectedCourse !== null) {
-      console.log('Course select effect has re-rendered!');
+    if (selectedCourse) {
+      const httpUrl = convertIpfsToHttp(selectedCourse);
+      setConvertedUri(httpUrl);
+      console.log('Converted URI to HTTP URL:', httpUrl);
     }
-}, [selectedCourse]);
+  }, [selectedCourse]);
 
-//   const handleCourseSelect = (courseInfo) => {
-//     setCourseInfo(courseInfo); // This will hold the detailed info of the course
+// const handleCourseSelect = (syllabusUrl) => {
+//   setDisplayedSyllabus(syllabusUrl);
 // };
 
 
@@ -188,6 +217,7 @@ function Courses() {
                     //category={description}
                     //title={courseTitle}
                     //courseInfo={courseInfo}
+                    onSelect={setSelectedCourse}
                     onClick={() => {
                       console.log("Clicked");
                       setCourseId(item.data.courseId);
@@ -215,9 +245,9 @@ function Courses() {
                   height: '100dvh',
                 }}
               >
-                {displayedSyllabus ? 
+                {convertedUri && isValidHttpUrl(convertedUri) ?  
                     <iframe 
-                        src={displayedSyllabus} 
+                        src={convertedUri} 
                         width="100%" 
                         height="100%" 
                         style={{border: "none"}}
@@ -230,7 +260,7 @@ function Courses() {
                             borderRadius: 'sm',
                             backgroundSize: 'cover',
                             backgroundImage:
-                                'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
+                                'url("https://github.com/Peace-Antz/academyv2/blob/main/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster.png")',
                         }}
                     />
                 }

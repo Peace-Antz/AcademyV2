@@ -37,9 +37,10 @@ import Badge from '@mui/joy/Badge';
 
 
 export default function CourseCard({
-  key,
+  //key,
   item,
   academyAddress,
+  onSelect,
   onClick,
   //courseInfo,
   // courseNumber,
@@ -176,6 +177,13 @@ export default function CourseCard({
   useEffect(() => {
     console.log('CourseCard has re-rendered!');
 }, []);
+
+// useEffect(() => {
+//   if (selectedSyllabus !==null) {
+//     onSelect(syllabus);
+//     // setCourseCount(data.length);
+//   }
+// }, [selectedSyllabus]);
 
 const [studentModalOpen, setStudentModalOpen] = useState(false);
 
@@ -612,7 +620,7 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-      onClick: () => onClick(setSelectedSyllabus(item.data.courseId +'/'+ syllabus)),
+      onClick: () => onClick(onSelect(syllabus)),
     },  
     React.createElement(
       Stack,
