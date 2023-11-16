@@ -260,11 +260,10 @@ function Courses() {
                           display: 'flex',
                           flexDirection: 'column',
                           borderRadius: 'sm',
-                          backgroundSize: 'contain', // Changed from 'cover' to 'contain'
+                          backgroundSize: 'cover', // Changed from 'cover' to 'contain'
                           backgroundRepeat: 'no-repeat', // This will prevent the image from repeating
-                          backgroundPosition: 'left', // This centers the image in the box
-                            backgroundImage:
-                                'url("https://github.com/Peace-Antz/academyv2/blob/main/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster.png?raw=true")',
+                          backgroundImage:
+                                'url("https://github.com/Peace-Antz/academyv2/blob/9c3c7c6cdcb0d6975f6ca6fc21f6e7a2d6330175/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster%20(1).png?raw=true")',
                         }}
                     />
                 }
