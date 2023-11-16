@@ -255,12 +255,16 @@ function Courses() {
                 :
                     <Box
                         sx={{
-                            backgroundColor: 'background.level1',
-                            height: '100%',
-                            borderRadius: 'sm',
-                            backgroundSize: 'cover',
+                          backgroundColor: 'background.level1',
+                          height: '100%',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          borderRadius: 'sm',
+                          backgroundSize: 'contain', // Changed from 'cover' to 'contain'
+                          backgroundRepeat: 'no-repeat', // This will prevent the image from repeating
+                          backgroundPosition: 'left', // This centers the image in the box
                             backgroundImage:
-                                'url("https://github.com/Peace-Antz/academyv2/blob/main/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster.png")',
+                                'url("https://github.com/Peace-Antz/academyv2/blob/main/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster.png?raw=true")',
                         }}
                     />
                 }
