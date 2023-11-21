@@ -5,12 +5,14 @@ import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
+import { Link as RouterLink } from 'react-router-dom';
+
 
 export default function HeroLeft01() {
   return (
     <TwoSidedLayout>
       <Typography color="primary" fontSize="lg" fontWeight="lg">
-        Free Education! If you pass...
+        Decentralized Education: The Future of Learning
       </Typography>
       <Typography
         level="h1"
@@ -20,13 +22,18 @@ export default function HeroLeft01() {
         Peace Antz Academy
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-      Join us in a movement where education is not just a journey but a shared adventure. Together, let's unlock the possibilities of tomorrow.
+      Dive into the Web3 world with our innovative grassroots approach to education. Try an education system that empowers and liberates.
       </Typography>
-      <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
+      <Button 
+        size="lg" 
+        endDecorator={<ArrowForward fontSize="xl" />} 
+        component={RouterLink}
+        to="/courses"
+      >
         Explore Courses
       </Button>
       <Typography>
-        Already a member? <Link fontWeight="lg">Sign in</Link>
+      Going down the anthill?  <Link fontWeight="lg" href= "https://discord.gg/KmZXkn5AFM" target="_blank">Join the Colony!</Link>
       </Typography>
 
       <Typography
@@ -38,7 +45,7 @@ export default function HeroLeft01() {
           transform: 'translateX(-50%)',
         }}
       >
-        "Be kind. Be relentless."
+        ☮️"Be kind. Be relentless."🐜
       </Typography>
     </TwoSidedLayout>
   );

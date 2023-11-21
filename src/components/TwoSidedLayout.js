@@ -64,7 +64,7 @@ export default function TwoSidedLayout({ children, reversed }) {
         })}
       >
         <img
-          src="https://f4.bcbits.com/img/a3630480597_10.jpg"
+          src="https://github.com/Peace-Antz/academyv2/blob/d3d37b08c542db7816daa7d45a61abe9a817ea4d/src/assets/images/hero1.png?raw=true"
           alt=""
         />
       </AspectRatio>
