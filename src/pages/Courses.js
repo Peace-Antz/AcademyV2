@@ -163,7 +163,7 @@ function Courses() {
 
 
   return (
-    <Box sx={{ width: '100%', overflowX: 'hidden' }}>
+    <Box sx={{ width: '100%', overflowX: 'auto' }}>
         <CssBaseline />
         <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
          <Main>
@@ -196,9 +196,11 @@ function Courses() {
                   sx={{
                     width: '100%',
                     height: 360,
-                    backgroundSize: 'cover',
+                    backgroundSize: 'contain',
+                    backgroundRepeat: 'no-repeat',
+                    backgroundPosition: 'center',
                     backgroundImage:
-                      'url("https://images.unsplash.com/photo-1478860409698-8707f313ee8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=4000&q=80")',
+                      'url("https://github.com/Peace-Antz/academyv2/blob/dd0e29d80e969cb4d092990cd064d8f105bc4658/src/assets/images/Please%20use%20a%20Computer%20for%20best%20viewing%20experience..png?raw=true")',
                   }}
                   display={{ xs: 'block', md: 'none' }}
                 />
