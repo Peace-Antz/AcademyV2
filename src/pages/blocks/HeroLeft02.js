@@ -60,7 +60,7 @@ export default function HeroLeft03() {
         }}
       >
         <AvatarGroup size="lg">
-        <Avatar src="URL_TO_GROK_LOGO" alt="X's Grok Logo" />
+        <Avatar src="https://github.com/Peace-Antz/academyv2/blob/d438d9694bbcb0cdfe0a3a6d9423f456229b3cb4/src/assets/images/aiant.png?raw=true" alt="ai" />
         </AvatarGroup>
         <Typography textColor="text.secondary">
           Use your favorite <b>AI</b> <br />

@@ -6,23 +6,24 @@ import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
+import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
 
 export default function HeroLeft03() {
   return (
     <TwoSidedLayout>
       <Typography color="primary" fontSize="lg" fontWeight="lg">
-        The power to do more
+        Empower your Community!
       </Typography>
       <Typography
         level="h1"
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        A large headlinerer about our product features & services
+        Support Decentralized Education
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        A descriptive secondary text placeholder. Use it to explain your business
-        offer better.
+        Some benefits of sponsoring a course includes bragging rights, potential recruitment of talent from courses and also just getting the word out on a project or business you want to support!
       </Typography>
       <Box
         sx={{
@@ -33,11 +34,11 @@ export default function HeroLeft03() {
           '& > *': { flex: 'auto' },
         }}
       >
-        <Button size="lg" variant="outlined" color="neutral">
+        <Button size="lg" variant="outlined" color="neutral" component={RouterLink} to="/resources">
           Learn More
         </Button>
-        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
-          Get Started
+        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />} component={RouterLink} to="/courses">
+          Sponsor a Course
         </Button>
       </Box>
       <Box
@@ -52,14 +53,13 @@ export default function HeroLeft03() {
           },
         }}
       >
+        <Link fontWeight="lg" href= "https://discord.gg/KmZXkn5AFM" target="_blank">
         <AvatarGroup size="lg">
           <Avatar />
-          <Avatar />
-          <Avatar />
         </AvatarGroup>
-        <Typography textColor="text.secondary">
-          Join a community of over <b>10K</b> <br />
-          designers and developers.
+        </Link>
+        <Typography textColor="text.secondary"><p></p>
+          Join our Colony of <b>Antz</b>
         </Typography>
       </Box>
 
