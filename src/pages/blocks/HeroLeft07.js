@@ -4,10 +4,49 @@ import Typography from '@mui/joy/Typography';
 import Card from '@mui/joy/Card';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
+import { typographyClasses } from '@mui/joy/Typography';
+import Container from '@mui/joy/Container';
+import Box from '@mui/joy/Box'
 
 export default function HeroLeft07() {
   return (
-    <TwoSidedLayout>
+    <Container
+      sx={(theme) => ({
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        //flexDirection: reversed ? 'column-reverse' : 'column',
+        alignItems: 'center',
+        py: 10,
+        gap: 4,
+        [theme.breakpoints.up('834')]: {
+          flexDirection: 'row',
+          gap: 6,
+        },
+        [theme.breakpoints.up('1199')]: {
+          gap: 12,
+        },
+      })}
+    >
+    <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+          width: '100%',
+          textAlign: 'center',
+          flexShrink: 999,
+          [theme.breakpoints.up('834')]: {
+            minWidth: 420,
+            alignItems: 'center',
+            textAlign: 'center',
+          },
+          [`& .${typographyClasses.root}`]: {
+            textWrap: 'balance',
+          },
+        })}
+      >
       <Typography
         level="h1"
         fontWeight="xl"
@@ -48,6 +87,7 @@ export default function HeroLeft07() {
       >
         HeroLeft07
       </Typography>
-    </TwoSidedLayout>
+    </Box>
+    </Container>
   );
 }

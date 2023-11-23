@@ -8,10 +8,49 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
 import { Link as RouterLink } from 'react-router-dom';
 import Link from '@mui/material/Link';
+import { typographyClasses } from '@mui/joy/Typography';
+import Container from '@mui/joy/Container';
 
 export default function HeroLeft03() {
   return (
-    <TwoSidedLayout>
+    <Container
+      sx={(theme) => ({
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        //flexDirection: reversed ? 'column-reverse' : 'column',
+        alignItems: 'center',
+        py: 10,
+        gap: 4,
+        [theme.breakpoints.up('834')]: {
+          flexDirection: 'row',
+          gap: 6,
+        },
+        [theme.breakpoints.up('1199')]: {
+          gap: 12,
+        },
+      })}
+    >
+    <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+          maxWidth: '100%',
+          width: '100%',
+          textAlign: 'center',
+          flexShrink: 999,
+          [theme.breakpoints.up('834')]: {
+            minWidth: 420,
+            alignItems: 'center',
+            textAlign: 'center',
+          },
+          [`& .${typographyClasses.root}`]: {
+            textWrap: 'balance',
+          },
+        })}
+      >
       <Typography color="primary" fontSize="lg" fontWeight="lg">
         Want to Create your very own Course?
       </Typography>
@@ -79,6 +118,7 @@ export default function HeroLeft03() {
       >
         ☮️"Be kind. Be relentless."🐜
       </Typography>
-    </TwoSidedLayout>
+    </Box>
+    </Container>
   );
 }

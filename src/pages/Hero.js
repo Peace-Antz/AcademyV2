@@ -45,8 +45,8 @@ export default function TeamExample() {
         <HeroLeft06 />
         <HeroLeft07 />
         <HeroLeft08 />
-        <HeroLeft09 />
-        <HeroLeft10 />
+        {/* <HeroLeft09 />
+        <HeroLeft10 /> */}
       </Box>
     </CssVarsProvider>
   );

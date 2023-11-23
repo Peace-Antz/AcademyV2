@@ -1,13 +1,52 @@
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
 import Button from '@mui/joy/Button';
+import Box from '@mui/joy/Box';
 import Typography from '@mui/joy/Typography';
 import Star from '@mui/icons-material/Star';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
+import { typographyClasses } from '@mui/joy/Typography';
+import Container from '@mui/joy/Container';
 
 export default function HeroLeft06() {
   return (
-    <TwoSidedLayout>
+    <Container
+      sx={(theme) => ({
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        //flexDirection: reversed ? 'column-reverse' : 'column',
+        alignItems: 'center',
+        py: 10,
+        gap: 4,
+        [theme.breakpoints.up('834')]: {
+          flexDirection: 'row',
+          gap: 6,
+        },
+        [theme.breakpoints.up('1199')]: {
+          gap: 12,
+        },
+      })}
+    >
+    <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+          width: '100%',
+          textAlign: 'center',
+          flexShrink: 999,
+          [theme.breakpoints.up('834')]: {
+            minWidth: 420,
+            alignItems: 'center',
+            textAlign: 'center',
+          },
+          [`& .${typographyClasses.root}`]: {
+            textWrap: 'balance',
+          },
+        })}
+      >
       <Typography
         level="h1"
         fontWeight="xl"
@@ -58,6 +97,7 @@ export default function HeroLeft06() {
       >
         HeroLeft06
       </Typography>
-    </TwoSidedLayout>
+    </Box>
+    </Container>
   );
 }
