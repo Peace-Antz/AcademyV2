@@ -29,7 +29,7 @@ import MuiLogo from './PeaceAntzLogo';
 import { openSidebar, closeSidebar } from '../utils';
 import ColorSchemeToggle from './ColorSchemeToggle';
 import { Link, useLocation } from 'react-router-dom';
-import PeaceAntzLogo from './PeaceAntzLogo';
+import PeaceAntzLogo from '../assets/images/peaceantz square small.png';
 import feather from 'feather-icons';
 import { TryRounded } from '@mui/icons-material';
 import { ConnectWallet } from "@thirdweb-dev/react";
@@ -129,7 +129,7 @@ export default function FirstSidebar() {
       >
         <i data-feather="arrow-left" />
       </IconButton>
-      <PeaceAntzLogo />
+      <Avatar src="" />
       <List sx={{ '--ListItem-radius': '8px', '--List-gap': '12px' }}>
       <ListItem>
           <ListItemButton selected={index === 0} onClick={() => setIndex(0)} component={Link} to="/hero">

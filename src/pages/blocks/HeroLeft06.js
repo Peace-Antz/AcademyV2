@@ -52,13 +52,11 @@ export default function HeroLeft06() {
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        A large headlinerer about our product features & services
+        Review your Teacher if you take their course
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        A descriptive secondary text placeholder. Use it to explain your business
-        offer better.
+        This allows the best teachers to be highlighted and prevents bad teachers from causing too much damage.
       </Typography>
-      <Button size="lg">Get Started For Free</Button>
       <Typography
         fontSize="xl"
         fontWeight="md"
@@ -75,16 +73,7 @@ export default function HeroLeft06() {
       >
         5.0
       </Typography>
-      <Typography textColor="text.secondary">
-        The resource and tips in Frames X are worth a fortune. My team loves the
-        design kits.
-      </Typography>
-      <Typography
-        startDecorator={<Avatar component="span" size="lg" variant="outlined" />}
-        sx={{ '--Typography-gap': '12px' }}
-      >
-        <b>John Seed</b>, Apple Inc.
-      </Typography>
+      <Button size="lg" color="info" variant= "contained" disabled>Reviews Coming Soon</Button>
 
       <Typography
         level="body-xs"
@@ -95,7 +84,7 @@ export default function HeroLeft06() {
           transform: 'translateX(-50%)',
         }}
       >
-        HeroLeft06
+        ☮️"Be kind. Be relentless."🐜
       </Typography>
     </Box>
     </Container>

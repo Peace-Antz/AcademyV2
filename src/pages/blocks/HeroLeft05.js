@@ -2,7 +2,7 @@
 import * as React from 'react';
 import Button from '@mui/joy/Button';
 import Input from '@mui/joy/Input';
-import Link from '@mui/joy/Link';
+
 import Box from '@mui/joy/Box'
 import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
@@ -48,22 +48,17 @@ export default function HeroLeft05() {
           },
         })}
       >
-        <Avatar src="" size="lg"/>
+        <Avatar src="https://github.com/Peace-Antz/academyv2/blob/247cec7ca606200487c90455e8a1ae67497cd280/src/assets/images/unlock%20protocol.jpg?raw=true" size="lg"/>
         <Typography
           level="h1"
           fontWeight="xl"
           fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
         >
-        Unlock Your Potential with Certificates
+          Unlock Your Potential with Certificates
         </Typography>
         <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-          Unlock Protocol offers customizable and verifiable certificates. Enhance your credibility with blockchain-based certification.
+          Unlock Protocol offers customizable and verifiable certificates you can make yourself! Enhance your credibility and build reputation with blockchain-based certification.
         </Typography>
-        <Input
-          size="lg"
-          placeholder="Enter your email"
-          sx={{ alignSelf: 'auto', mt: 2 }}
-        />
         <Button
           size="lg"
           endDecorator={<ArrowForward />}
@@ -75,13 +70,6 @@ export default function HeroLeft05() {
         >
           Create Certificates
         </Button>
-        <Typography textColor="text.secondary">
-          By signing up, you agree to our{' '}
-          <Link color="neutral">
-            <b>Privacy Policy</b>
-          </Link>
-        </Typography>
-
         <Typography
           level="body-xs"
           sx={{

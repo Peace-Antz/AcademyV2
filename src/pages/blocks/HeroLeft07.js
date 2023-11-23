@@ -7,6 +7,8 @@ import TwoSidedLayout from '../../components/TwoSidedLayout';
 import { typographyClasses } from '@mui/joy/Typography';
 import Container from '@mui/joy/Container';
 import Box from '@mui/joy/Box'
+import Link from '@mui/joy/Link';
+import { Avatar } from '@mui/joy';
 
 export default function HeroLeft07() {
   return (
@@ -47,16 +49,16 @@ export default function HeroLeft07() {
           },
         })}
       >
+        <Avatar src="https://app.poap.xyz/static/media/POAP.435d79bb81473ff8f5eccb4bbe2f43bc.svg" size="lg"/>
       <Typography
         level="h1"
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        A large headlinerer about our product features & services
+        Use POAPs to take and verify attendance
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        A descriptive secondary text placeholder. Use it to explain your business
-        offer better.
+        POAPs (aka Proof of Attendance Protocol) is a great option for seeing who showed up to a class using web3 tools! We recommend manually dispersing them until we set up a more automated method.
       </Typography>
       <Card
         variant="outlined"
@@ -67,15 +69,17 @@ export default function HeroLeft07() {
         <AutoAwesomeIcon color="success" fontSize="xl3" />
         <div>
           <Typography fontSize="xl" fontWeight="lg" sx={{ mb: 1 }}>
-            The new version is out.
+            Create POAPs for your Course
           </Typography>
           <Typography level="body-sm">
-            This is where a notification message will appear. <br />
-            Enter text into this container.
+            All you need is a picture, description <br />
+            and some links to make your own today!
           </Typography>
         </div>
       </Card>
-      <Button size="lg">Download the App</Button>
+      <Link href= "https://accounts.drops.poap.xyz/" target="_blank">
+      <Button size="lg">Create a POAP</Button>
+      </Link>
       <Typography
         level="body-xs"
         sx={{
@@ -85,7 +89,7 @@ export default function HeroLeft07() {
           transform: 'translateX(-50%)',
         }}
       >
-        HeroLeft07
+        ☮️"Be kind. Be relentless."🐜
       </Typography>
     </Box>
     </Container>

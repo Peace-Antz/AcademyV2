@@ -14,11 +14,10 @@ export default function HeroLeft08() {
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        A large headlinerer about our product features & services
+        Create, Sponsor or Enroll in a Course Today!
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        A descriptive secondary text placeholder. Use it to explain your business
-        offer better.
+        Have suggestions? Let us know what features or improvements you would like to see.
       </Typography>
       <Box
         sx={{
@@ -30,10 +29,10 @@ export default function HeroLeft08() {
         }}
       >
         <Button size="lg" variant="outlined" color="neutral">
-          Learn More
+          Suggestions
         </Button>
         <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
-          Get Started
+          Courses
         </Button>
       </Box>
       <Box
@@ -67,15 +66,15 @@ export default function HeroLeft08() {
             4.9
           </Typography>
           <Typography textColor="text.secondary">
-            Rated by <b>5k</b> people on trustpilot.com
+            On-chain reviews <b>coming soon</b>!
           </Typography>
         </div>
         <div>
           <Typography fontSize="xl4" fontWeight="lg">
-            9.5k+
+            Web 3.0
           </Typography>
           <Typography textColor="text.secondary">
-            Active users from the top world companies.
+            Onboarding the next wave of Web3 users!
           </Typography>
         </div>
       </Box>
@@ -88,7 +87,7 @@ export default function HeroLeft08() {
           transform: 'translateX(-50%)',
         }}
       >
-        HeroLeft08
+        ☮️"Be kind. Be relentless."🐜
       </Typography>
     </TwoSidedLayout>
   );
