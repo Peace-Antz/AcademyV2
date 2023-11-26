@@ -623,7 +623,7 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-      //onClick: () => onClick(onSelect(syllabus)),
+      onClick: () => onClick(onSelect(syllabus)),
     },  
     React.createElement(
       Stack,
