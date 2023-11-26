@@ -35,6 +35,7 @@ import { TryRounded } from '@mui/icons-material';
 import { ConnectWallet } from "@thirdweb-dev/react";
 import { styled } from '@mui/material/styles';
 import { deepPurple } from '@mui/material/colors';
+import Tooltip from '@mui/material/Tooltip';
 
 
 const StyledAvatar = styled(Avatar)`
@@ -50,6 +51,8 @@ const StyledAvatar = styled(Avatar)`
   }
   `}
 `;
+
+
 
 export default function FirstSidebar() {
 
@@ -129,7 +132,7 @@ export default function FirstSidebar() {
       >
         <i data-feather="arrow-left" />
       </IconButton>
-      <Avatar src="" />
+      <Avatar src="https://github.com/Peace-Antz/academyv2/blob/2421cbb0800acc1e9ae0a02f106a9cd0de229202/src/assets/images/peaceantz%20square%20small.png?raw=true" />
       <List sx={{ '--ListItem-radius': '8px', '--List-gap': '12px' }}>
       <ListItem>
           <ListItemButton selected={index === 0} onClick={() => setIndex(0)} component={Link} to="/hero">
@@ -158,7 +161,7 @@ export default function FirstSidebar() {
           </ListItemButton>
         </ListItem>
         <ListItem>
-          <ListItemButton selected={index === 5} onClick={() => setIndex(5)} component={Link} to="/profile">
+          <ListItemButton selected={index === 5} onClick={() => setIndex(5)} component={Link} to="/review">
             <i data-feather="users" />
           </ListItemButton>
         </ListItem>

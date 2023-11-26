@@ -5,6 +5,7 @@ import Typography from '@mui/joy/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import Star from '@mui/icons-material/Star';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function HeroLeft08() {
   return (
@@ -28,10 +29,10 @@ export default function HeroLeft08() {
           '& > *': { flex: 'auto' },
         }}
       >
-        <Button size="lg" variant="outlined" color="neutral">
+        <Button size="lg" variant="outlined" color="neutral" disabled>
           Suggestions
         </Button>
-        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
+        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />} component={RouterLink} to="/courses">
           Courses
         </Button>
       </Box>

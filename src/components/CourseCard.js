@@ -166,6 +166,9 @@ export default function CourseCard({
     paymentAmountInWei
   } = CourseDetailsModalData();
 
+  console.log("Course Card uploading syllabus status", uploading)
+  console.log("Course Card uploading course image status", imageUploading)
+
 
   const extractFileNameFromURI = (uri) => {
     const filename = uri.split('/').pop();
@@ -417,7 +420,7 @@ const LoadingOverlay = styled('div')`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10; // to ensure it's above other content
+  z-index: 1000; // to ensure it's above other content
 `;
 
 
@@ -620,7 +623,7 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-      onClick: () => onClick(onSelect(syllabus)),
+      //onClick: () => onClick(onSelect(syllabus)),
     },  
     React.createElement(
       Stack,
@@ -703,7 +706,7 @@ function StudentEvaluationModal({
     <Button
       variant="outlined"
       color="neutral"
-      onClick={() => {
+      onClick={(event) => {
         setFormSubmitted(false);
         setOpen(true);
       }}
