@@ -23,7 +23,7 @@ function Courses() {
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const [selectedCourse, setSelectedCourse] = useState(null);
   const [selectedCourseId, setCourseId]= useState(null);
-  const { selectedContract } = useContract(selectedCourse); 
+  //const { selectedContract } = useContract(selectedCourse); 
   // const { data, isLoading } = useContractRead(selectedContract, "uri", []);
   const storage = useStorage();
   const address = useAddress();
@@ -71,7 +71,7 @@ function Courses() {
   console.log("courseUri", courseUri);
   
   console.log("selectedCourseId", selectedCourseId);
-  console.log("selectedContract on Courses", selectedContract);
+  //console.log("selectedContract on Courses", selectedContract);
   console.log("Contract on Courses", contract);
   console.log("selectedCourse", selectedCourse);
   console.log("convertedUri", convertedUri);
@@ -219,8 +219,8 @@ function Courses() {
                     //category={description}
                     //title={courseTitle}
                     //courseInfo={courseInfo}
-                    onSelect={setSelectedCourse}
-                    onClick={() => {
+                    onCardSelect={setSelectedCourse}
+                    onCardClick={() => {
                       console.log("Clicked");
                       setCourseId(item.data.courseId);
                       //setSelectedSyllabus(courseInfo);

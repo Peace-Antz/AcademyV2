@@ -6,19 +6,60 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import Star from '@mui/icons-material/Star';
 import TwoSidedLayout from '../../components/TwoSidedLayout';
 import { Link as RouterLink } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import { typographyClasses } from '@mui/joy/Typography';
+import Container from '@mui/joy/Container';
+import { Avatar } from '@mui/joy';
 
 export default function HeroLeft08() {
   return (
-    <TwoSidedLayout>
+    <Container
+      sx={(theme) => ({
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        //flexDirection: reversed ? 'column-reverse' : 'column',
+        alignItems: 'center',
+        py: 10,
+        gap: 4,
+        [theme.breakpoints.up('834')]: {
+          flexDirection: 'row',
+          gap: 6,
+        },
+        [theme.breakpoints.up('1199')]: {
+          gap: 12,
+        },
+      })}
+    >
+    <Box
+        sx={(theme) => ({
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem',
+          width: '100%',
+          textAlign: 'center',
+          flexShrink: 999,
+          [theme.breakpoints.up('834')]: {
+            minWidth: 420,
+            alignItems: 'center',
+            textAlign: 'center',
+          },
+          [`& .${typographyClasses.root}`]: {
+            textWrap: 'balance',
+          },
+        })}
+      >
+        <Avatar src="https://opolis.co/wp-content/uploads/2021/04/transparent-512x512-1-300x300.png" size="lg"/>
       <Typography
         level="h1"
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        Create, Sponsor or Enroll in a Course Today!
+        Are you earning in Web 3.0?
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-        Have suggestions? Let us know what features or improvements you would like to see.
+      With <b>Opolis</b>, independent workers maintain freedom and flexibility, while replicating the safety and security of a traditional W2 job.
       </Typography>
       <Box
         sx={{
@@ -29,12 +70,11 @@ export default function HeroLeft08() {
           '& > *': { flex: 'auto' },
         }}
       >
-        <Button size="lg" variant="outlined" color="neutral" disabled>
-          Suggestions
+        <Link href="https://opolis.co/" target='_blank'>
+        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />}>
+          Learn More
         </Button>
-        <Button size="lg" endDecorator={<ArrowForward fontSize="xl" />} component={RouterLink} to="/courses">
-          Courses
-        </Button>
+        </Link>
       </Box>
       <Box
         sx={(theme) => ({
@@ -51,7 +91,7 @@ export default function HeroLeft08() {
             alignItems: 'center',
           },
           [theme.breakpoints.up(834)]: {
-            textAlign: 'left',
+            textAlign: 'center',
             '& > *': {
               alignItems: 'initial',
             },
@@ -59,23 +99,11 @@ export default function HeroLeft08() {
         })}
       >
         <div>
-          <Typography
-            fontSize="xl4"
-            fontWeight="lg"
-            endDecorator={<Star fontSize="xl4" sx={{ color: 'warning.300' }} />}
-          >
-            4.9
-          </Typography>
-          <Typography textColor="text.secondary">
-            On-chain reviews <b>coming soon</b>!
-          </Typography>
-        </div>
-        <div>
           <Typography fontSize="xl4" fontWeight="lg">
-            Web 3.0
+            Check our their Podcast!
           </Typography>
           <Typography textColor="text.secondary">
-            Onboarding the next wave of Web3 users!
+            Sit back and relax to one of their <Link href='https://opolis.co/resources/podcast/' target='_blank'>podcasts</Link> to learn more! If you are interested, you can also help the developer by clicking on this <Link href='https://Opolis.referralrock.com/l/1SHERAJRAGO24/' target='_blank'>referral link</Link> ❤️
           </Typography>
         </div>
       </Box>
@@ -90,6 +118,7 @@ export default function HeroLeft08() {
       >
         ☮️"Be kind. Be relentless."🐜
       </Typography>
-    </TwoSidedLayout>
+      </Box>
+      </Container>
   );
 }

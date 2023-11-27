@@ -37,7 +37,7 @@ export default function HeaderSection({createCourseCall}) {
           level: 'body-md',
           color: 'neutral',
         },
-        'Enroll in a course or Sponsor one to contribute to web3 education! Want to teach a course? Create one!'
+        'Enroll in a course or Sponsor one to contribute to web3 education! Want to teach a course? Create one! (Please be patient while waiting for Courses to load)'
       )
     ),
     React.createElement(

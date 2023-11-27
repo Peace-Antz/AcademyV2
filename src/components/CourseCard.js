@@ -40,8 +40,8 @@ export default function CourseCard({
   //key,
   item,
   academyAddress,
-  onSelect,
-  onClick,
+  onCardSelect,
+  onCardClick,
   //courseInfo,
   // courseNumber,
    //category,
@@ -448,12 +448,15 @@ function CourseDetailsModalData() {
 
   
 
-  const handleFileChange = (file) => {
+  const handleFileChange = async (file) => {
     setUploading(true);
-    handlePdf(file).finally(() => {
-      setUploading(false);
-      setFileUploaded(true);
-    });
+    try {
+      await handlePdf(file);
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+    setUploading(false);
+    setFileUploaded(true);
   };
 
 const handleImageUpload = async (file) => {
@@ -623,8 +626,12 @@ function StudentEvaluationModal({
         borderRadius: 'sm',
         '&:hover': { boxShadow: 'md', borderColor: 'neutral.outlinedHoverBorder' },
       },
-      onClick: () => onClick(onSelect(syllabus)),
-    },  
+       onClick: () => {
+      if (onCardClick && onCardSelect && syllabus) {
+        onCardClick(onCardSelect(syllabus));
+      }
+    }
+  },  
     React.createElement(
       Stack,
       {
@@ -707,6 +714,7 @@ function StudentEvaluationModal({
       variant="outlined"
       color="neutral"
       onClick={(event) => {
+        event.stopPropagation();
         setFormSubmitted(false);
         setOpen(true);
       }}
@@ -720,7 +728,7 @@ function StudentEvaluationModal({
     >
       Input Course Details
     </Button>
-    <Modal open={open} onClose={() => { if (formSubmitted || !uploading) setOpen(false); }}>
+    <Modal onClick={(event) => event.stopPropagation()} open={open} onClose={() => { if (formSubmitted || !uploading) setOpen(false); }}>
       <ModalOverflow>
       <ModalDialog>
         <DialogTitle>Input Course Details</DialogTitle>
@@ -766,6 +774,7 @@ function StudentEvaluationModal({
     {extractFileNameFromURI(pdfData)}
     <p></p>
               <Button
+              onClick={(event) => event.stopPropagation()}
               component="label"
               role={undefined}
               tabIndex={-1}
@@ -793,15 +802,22 @@ function StudentEvaluationModal({
                   type="file"
                   accept=".pdf"
                   value={syllabusPdf}
-                  onChange={(e) => {
-                      handleFileChange(e.target.files[0]);
-                      setFileUploaded(true); // Assuming you have a setter like this
-                  }}
+                  onChange={async (e) => {
+                    e.stopPropagation();
+                    try {
+                        await handleFileChange(e.target.files[0]);
+                        setFileUploaded(true);
+                    } catch (error) {
+                        console.error("Error uploading file:", error);
+                        // Handle the error appropriately
+                    }
+                }}
               />
           </Button>
           </Typography>
     ) : (
         <Button
+            onClick={(event) => event.stopPropagation()}
             component="label"
             role={undefined}
             tabIndex={-1}
@@ -831,10 +847,16 @@ function StudentEvaluationModal({
                 type="file"
                 accept=".pdf"
                 value={syllabusPdf}
-                onChange={(e) => {
-                    handleFileChange(e.target.files[0]);
-                    setFileUploaded(true); // Assuming you have a setter like this
-                }}
+                onChange={async (e) => {
+                  e.stopPropagation();
+                  try {
+                      await handleFileChange(e.target.files[0]);
+                      setFileUploaded(true);
+                  } catch (error) {
+                      console.error("Error uploading file:", error);
+                      // Handle the error appropriately
+                  }
+              }}
             />
         </Button>
     )}
@@ -891,7 +913,14 @@ function StudentEvaluationModal({
           <VisuallyHiddenInput
             type="file"
             accept="image/*"
-            onChange={(e) => handleImageUpload(e.target.files[0])}
+            onChange={async (e) => {
+              try {
+                  await handleImageUpload(e.target.files[0]);
+              } catch (error) {
+                  console.error("Error uploading image:", error);
+                  // Handle the error appropriately
+              }
+          }}
           />
         </Button>
         </div>
@@ -915,7 +944,14 @@ function StudentEvaluationModal({
           required
           type="file"
           accept="image/*"
-          onChange={(e) => handleImageUpload(e.target.files[0])}
+          onChange={async (e) => {
+            try {
+                await handleImageUpload(e.target.files[0]);
+            } catch (error) {
+                console.error("Error uploading image:", error);
+                // Handle the error appropriately
+            }
+        }}
         />
       </Button>
     )}
