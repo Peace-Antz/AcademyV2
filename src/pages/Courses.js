@@ -14,11 +14,12 @@ import Toggles from '/home/peaceantz/academyV2/src/components/Toggles.js';
 import { useContract, useContractRead, useContractWrite, useContractEvents, useAddress, useStorage, MediaRenderer } from "@thirdweb-dev/react";
 import { useState, useEffect } from 'react';
 import CoursesData from '../data/coursesData.js';
+import Container from '@mui/joy/Container';
 
 
 
 function Courses() {
-  const academyAddress = "0x03aB6c074373e7957e07bF3FEb0629E5323a464B"
+  const academyAddress = "0x61812C2B392a02052945C54c927aEb9A94Ecf513"
   // eslint-disable-next-line
   const { contract, isLoadingContract, errorContract } = useContract(academyAddress); //Make sure to change initilize call (academyAddress) as well if you change this.
   const [selectedCourse, setSelectedCourse] = useState(null);
@@ -163,9 +164,9 @@ function Courses() {
 
 
   return (
-    <Box sx={{ width: '100%', overflowX: 'auto' }}>
+    <Box sx={{ width: '100%', overflowX: 'hidden' }}>
         <CssBaseline />
-        <Box sx={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', width: '100%', borderRadius: 100 }}>
          <Main>
           <Grid
             container

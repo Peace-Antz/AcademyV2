@@ -3,8 +3,9 @@ import { useColorScheme } from '@mui/joy/styles';
 import GlobalStyles from '@mui/joy/GlobalStyles';
 import IconButton from '@mui/joy/IconButton';
 import Sheet from '@mui/joy/Sheet';
-import MuiLogo from './PeaceAntzLogo';
+import Avatar from '@mui/joy/Avatar';
 import { toggleSidebar } from '../utils';
+import Typography from '@mui/joy/Typography';
 
 function ColorSchemeToggle({ onClick, sx, ...props }) {
   const { mode, setMode } = useColorScheme();
@@ -91,7 +92,9 @@ export default function Header() {
       >
         <i data-feather="menu" />
       </IconButton>
-      <MuiLogo variant="plain" sx={{ boxShadow: 'none', mr: 'auto' }} />
+      <Typography>
+        Peace Antz Academy
+      </Typography>
       <ColorSchemeToggle id={undefined} />
     </Sheet>
   );

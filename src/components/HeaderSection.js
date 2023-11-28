@@ -15,6 +15,7 @@ export default function HeaderSection({createCourseCall}) {
       },
       justifyContent: 'space-between',
       alignItems: 'flex-start',
+      //width: '100%',
       spacing: 2,
     },
     React.createElement(
@@ -45,6 +46,11 @@ export default function HeaderSection({createCourseCall}) {
       {
         direction: 'row',
         spacing: 1.5,
+        flexDirection: {
+          xs: 'column',
+          md: 'row',
+        },
+        //width: '100%'
       },
       React.createElement(
         Button,

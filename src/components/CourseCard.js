@@ -650,7 +650,7 @@ function StudentEvaluationModal({
           badgeContent: badgeContent,
           anchorOrigin: {
             vertical: 'top',
-            horizontal: 'left',
+            horizontal: 'center',
           },
           sx: {
             
@@ -661,6 +661,10 @@ function StudentEvaluationModal({
             marginBottom: {
               xs: -2.5,
               sm: 0,
+            },
+            anchorOrigin: {
+              vertical: 'top',
+              horizontal: 'center',
             },
           },
         },
@@ -1041,6 +1045,10 @@ function StudentEvaluationModal({
           {
             spacing: 1,
             direction: 'row',
+            flexDirection: {
+              xs: 'column',
+              md: 'row',
+            },
           },
           
           React.createElement(
@@ -1186,7 +1194,7 @@ function StudentEvaluationModal({
             React.createElement(
               'strong',
               null,
-              <p>{formattedStake} MATIC</p>
+              <p>{formattedStake} MATIC to Enroll</p>
             ),
           )
         ),
