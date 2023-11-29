@@ -72,6 +72,9 @@ export default function HeaderSection({createCourseCall}) {
       ),
       React.createElement(
         ConnectWallet,
+        {
+          switchToActiveChain: 'true',
+        },
 
       )
       
