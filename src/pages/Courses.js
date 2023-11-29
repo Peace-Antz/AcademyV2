@@ -266,7 +266,7 @@ function Courses() {
                           backgroundSize: 'cover', // Changed from 'cover' to 'contain'
                           backgroundRepeat: 'no-repeat', // This will prevent the image from repeating
                           backgroundImage:
-                                'https://github.com/Peace-Antz/academyV2/blob/main/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster%20(1).png?raw=true',
+                                'url("https://github.com/Peace-Antz/academyV2/blob/18d5ebdd75f962457106b130e14b3629fe82c6b0/src/assets/images/Colorful%20Illustration%20Kids%20Store%20Poster%20(1).png?raw=true")',
                         }}
                     />
                 }
