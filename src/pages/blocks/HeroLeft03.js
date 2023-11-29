@@ -59,7 +59,7 @@ export default function HeroLeft03() {
         fontWeight="xl"
         fontSize="clamp(1.875rem, 1.3636rem + 2.1818vw, 3rem)"
       >
-        Support Decentralized Education
+        Support Free Education
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
         Some benefits of sponsoring a course includes bragging rights, potential recruitment of talent from courses and also just getting the word out on a project or business you want to support!

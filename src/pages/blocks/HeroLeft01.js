@@ -12,7 +12,7 @@ export default function HeroLeft01() {
   return (
     <TwoSidedLayout>
       <Typography color="primary" fontSize="lg" fontWeight="lg">
-        Decentralized Education: The Future of Learning
+        Free Education: The Future of Learning
       </Typography>
       <Typography
         level="h1"
@@ -22,7 +22,7 @@ export default function HeroLeft01() {
         Peace Antz Academy
       </Typography>
       <Typography fontSize="lg" textColor="text.secondary" lineHeight="lg">
-      Dive into the Web3 world with our innovative grassroots approach to education. This is a public-goods upskilling service, focused on blockchain but open to all.
+      Dive into our innovative world of grassroots, mentorship approach to education. This is a public-goods upskilling service open to all!
       </Typography>
       <Button 
         size="lg" 

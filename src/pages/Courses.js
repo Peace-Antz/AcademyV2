@@ -201,7 +201,7 @@ function Courses() {
                     backgroundRepeat: 'no-repeat',
                     backgroundPosition: 'center',
                     backgroundImage:
-                      'url("https://github.com/Peace-Antz/academyv2/blob/dd0e29d80e969cb4d092990cd064d8f105bc4658/src/assets/images/Please%20use%20a%20Computer%20for%20best%20viewing%20experience..png?raw=true")',
+                      'url("https://github.com/Peace-Antz/academyv2/blob/e328701aabb235331d4da8486832d9a2fb5268f1/src/assets/images/antzacademyhall.png?raw=true")',
                   }}
                   display={{ xs: 'block', md: 'none' }}
                 />
