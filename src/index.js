@@ -24,6 +24,9 @@ import Filters from './components/Filters';
 import Toggles from './components/Toggles';
 import Pagination from './components/Pagination';
 import process from 'process';
+import { Buffer } from 'buffer';
+window.Buffer = Buffer;
+
 
 window.process = process;
 
